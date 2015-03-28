@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     MainWindow window;
     window.show();
 
-    Graph::init(3);
+    Graph::init(4);
 
     Graph graph;
     graph.generateNodes();

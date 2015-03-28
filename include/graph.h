@@ -38,6 +38,7 @@ public:
 private:
 
     void edgeBacktrack(int start);
+    void edgeBacktrack(int start, int its);
     bool interfereEdges(double x1, double y1, double x2, double y2);
 
     static int _sNodes;

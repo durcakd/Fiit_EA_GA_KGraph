@@ -76,11 +76,21 @@ bool Graph::calcFitness() {
 void Graph::edgeBacktrack(int start) {
     if (start+1 < _sNodes) {
         for (int i=start+1 ; i<_sNodes; i++) {
-            bool isInterference = interfereEdges(_x[start], _y[start], _x[i], _y[i]);
-            qDebug() << start<<" x "<< i << "  " << isInterference;
-            _fitnes += isInterference ? 1 : 0;
+            //bool isInterference = interfereEdges(_x[start], _y[start], _x[i], _y[i]);
+            qDebug() << start<<" x "<< i;
+            edgeBacktrack(start, i+1);
+
         }
         edgeBacktrack(start+1);
+    }
+}
+
+void Graph::edgeBacktrack(int start, int its) {
+    if (start+1 < _sNodes) {
+        for (int i=its ; i<_sNodes; i++) {
+            qDebug() <<"   "<<  start<<" x "<< i;
+        }
+        edgeBacktrack(start+1, start+2);
     }
 }
 
