@@ -39,17 +39,20 @@ private:
 
     void edgeBacktrack(int start);
     void edgeBacktrack(int start, int its);
-    void edgeBacktrack(int start, int its, double x1, double y1, double x2, double y2);
+    void edgeBacktrack(int start, int its,
+                       double x1, double y1, double x2, double y2,
+                       int node1, int node2);
     bool interceptEdges(double x1, double y1, double x2, double y2,
-                        double x3, double y3, double x4, double y4) const;
+                        double x3, double y3, double x4, double y4, bool hasSameNodes) const;
     bool interceptOrderedEdges(double x1, double y1, double x2, double y2,
-                               double x3, double y3, double x4, double y4) const;
+                               double x3, double y3, double x4, double y4, bool hasSameNodes) const;
     bool interceptOrderedEdges1(double x1, double y1, double x2, double y2,
-                               double x3, double y3, double x4, double y4) const;
+                               double x3, double y3, double x4, double y4, bool hasSameNodes) const;
     bool interceptOrderedEdges2(double x1, double y1, double x2, double y2,
-                               double x3, double y3, double x4, double y4) const;
+                               double x3, double y3, double x4, double y4, bool hasSameNodes) const;
+    bool checkSameNodes(int i1, int i2, int i3, int i4) const;
 
-    bool checkSameNodes(double x, double y, int index) const;
+    bool checkSameNodesValues(double x, double y, int index) const;
 
     static int _sNodes;
 

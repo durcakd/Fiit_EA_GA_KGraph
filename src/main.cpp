@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     MainWindow window;
     window.show();
 
-    Graph::init(6);
+    Graph::init(9);
 
     Graph graph;
     graph.generateNodes();
@@ -20,9 +20,9 @@ int main(int argc, char *argv[])
     qDebug() << graph.toString();
     qDebug() << "----------------";
 
-    graph.mutate();
-    graph.calcFitness();
-    qDebug() << graph.toString();
+    //graph.mutate();
+    //graph.calcFitness();
+    //qDebug() << graph.toString();
     qDebug() << "----------------";
 
     return app.exec();

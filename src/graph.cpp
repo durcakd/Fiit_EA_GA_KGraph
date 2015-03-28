@@ -85,7 +85,8 @@ void Graph::edgeBacktrack(int start) {
             //qDebug() << start<<" x "<< i;
             //edgeBacktrack(start, i+1);
             edgeBacktrack(start, i+1,
-                          _x[start], _y[start], _x[i], _y[i]);
+                          _x[start], _y[start], _x[i], _y[i],
+                          start, i);
 
         }
         edgeBacktrack(start+1);
@@ -102,41 +103,52 @@ void Graph::edgeBacktrack(int start, int its) {
 }
 
 void Graph::edgeBacktrack(int start, int its,
-                          double x1, double y1, double x2, double y2) {
+                          double x1, double y1, double x2, double y2,
+                          int node1, int node2) {
 
     if (start+1 < _sNodes) {
         for (int i=its ; i<_sNodes; i++) {
 
+            bool sameNodes = checkSameNodes(node1, node2, start, i);
             bool interfer = interceptEdges(x1, y1, x2, y2,
-                                           _x[start], _y[start], _x[i], _y[i]);
+                                           _x[start], _y[start], _x[i], _y[i],sameNodes);
             _fitnes += interfer ? 1 : 0;
-            //qDebug() <<"   "<<  start<<" x "<< i << "  " << interfer;
+            if(interfer) {
+                qDebug()<< "        "<< node1<<"-"<<node2<<" "<<start<<"-"<<i<<"      "  << interfer << "    "<< sameNodes;
+
+                if (sameNodes) {
+                            qDebug() << "Specia same node case : ";
+                            qDebug() << int(100*x1)<<" "<<int(100*y1)<<" "<<int(100*x2)<<" "<<int(100*y2)\
+                                     <<"     "<<int(100*_x[start])<<" "<<int(100*_y[start])<<" "<<int(100*_x[i])<<" "<<int(100*_y[i]);
+                }
+            }
         }
-        edgeBacktrack(start+1, start+2, x1, y1, x2, y2);
+        edgeBacktrack(start+1, start+2, x1, y1, x2, y2,
+                      node1, node2);
     }
 }
 
 bool Graph::interceptEdges(double x1, double y1, double x2, double y2,
-                           double x3, double y3, double x4, double y4) const {
+                           double x3, double y3, double x4, double y4, bool hasSameNodes) const {
     if (x1 > x2) {
         if (x3 > x4) {
-            return interceptOrderedEdges(x2,y2,x1,y1, x4,y4,x3,y3);
+            return interceptOrderedEdges(x2,y2,x1,y1, x4,y4,x3,y3, hasSameNodes);
         } else {
-            return interceptOrderedEdges(x2,y2,x1,y1, x3,y3,x4,y4);
+            return interceptOrderedEdges(x2,y2,x1,y1, x3,y3,x4,y4, hasSameNodes);
         }
     } else {
         if (x3 > x4) {
-            return interceptOrderedEdges(x1,y1,x2,y2, x4,y4,x3,y3);
+            return interceptOrderedEdges(x1,y1,x2,y2, x4,y4,x3,y3, hasSameNodes);
         } else {
-            return interceptOrderedEdges(x1,y1,x2,y2, x3,y3,x4,y4);
+            return interceptOrderedEdges(x1,y1,x2,y2, x3,y3,x4,y4, hasSameNodes);
         }
     }
 }
 
 bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
-                                  double x3, double y3, double x4, double y4) const {
-    bool res1 = interceptOrderedEdges1(x1,y1,x2,y2, x3,y3,x4,y4);
-    bool res2 = interceptOrderedEdges1(x1,y1,x2,y2, x3,y3,x4,y4);
+                                  double x3, double y3, double x4, double y4, bool hasSameNodes) const {
+    bool res1 = interceptOrderedEdges1(x1,y1,x2,y2, x3,y3,x4,y4, hasSameNodes);
+    bool res2 = interceptOrderedEdges2(x1,y1,x2,y2, x3,y3,x4,y4, hasSameNodes);
     if (res1 != res2) {
         qDebug() << "Huston we have problem! differen results: "<< res1 <<" "<<res2;
         qDebug() << x1<<" "<<y1<<" "<<x2<<" "<<y2<<"     "<<x3<<" "<<y3<<" "<<x4<<" "<<y4;
@@ -145,10 +157,9 @@ bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
 }
 
 bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
-                                  double x3, double y3, double x4, double y4) const {
+                                  double x3, double y3, double x4, double y4, bool hasSameNodes) const {
     // must be true that x1<=x2 && x3<=x4
     // they have not a same one point
-
     double dxA = x2-x1;
     double dxB = x4-x3;
     if (0.0==dxA && 0.0==dxB) {
@@ -158,7 +169,7 @@ bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
                 return true;
             }
         }
-    } else if (0.0==dxA) {
+    } else if (!hasSameNodes && 0.0==dxA) {
         double a2 = (y4-y3)/(dxB);
         double qB = y3-a2*x3;
         double y = a2*x1+qB;
@@ -166,7 +177,7 @@ bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
             qDebug() << "  <Intercept1 (A without slope intercept form)";
             return true;
         }
-    } else if (0.0==dxB) {
+    } else if (!hasSameNodes && 0.0==dxB) {
         double a1 = (y2-y1)/(dxA);
         double qA = y1-a1*x1;
         double y = a1*x3+qA;
@@ -181,12 +192,12 @@ bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
         double a2 = (y4-y3)/(dxB);
         double da = a1-a2;
 
-        if (0.0 != da) {
+        if (!hasSameNodes && 0.0 != da) {
             // interception point[x,y]
             double x = (a1*x1 -y1 -a2*x3 +y3)/(da);
 
             if (x1<=x && x<=x2 && x3<=x && x<=x4) {
-                //qDebug() << "  <Intercept!";
+                //qDebug() << "  <Intercept1!";
                 return true;
             }
         } else {
@@ -205,8 +216,7 @@ bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
 
 
 bool Graph::interceptOrderedEdges2(double x1, double y1, double x2, double y2,
-                                   double x3, double y3, double x4, double y4) const {
-
+                                   double x3, double y3, double x4, double y4, bool hasSameNodes) const {
     double a1,b1,c1,a2,b2,c2,d,f1,f2,f3,f4;
     a2 = y4-y3;
     b2 = x3-x4;
@@ -244,11 +254,21 @@ bool Graph::interceptOrderedEdges2(double x1, double y1, double x2, double y2,
         // interception point[x,y]
         //double x = (b1*c2-b2*c1)/d;
         //double y = (a2*c1-a1*c2)/d;
-        return true;
+        if (!hasSameNodes){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
 
+bool Graph::checkSameNodes(int i1, int i2, int i3, int i4) const {
+    if (i1==i3 || i1==i4 || i2==i3 || i2==i4) {
+        return true;
+    }
+    return false;
+}
 
 //----------- mutate ---------------
 void Graph::mutate() {
@@ -257,14 +277,14 @@ void Graph::mutate() {
     do {
        x = Util::get()->udD();
        y = Util::get()->udD();
-    } while (checkSameNodes(x, y, rindex));
+    } while (checkSameNodesValues(x, y, rindex));
 
     _x[rindex] = x;
     _y[rindex] = y;
     _fitnes = -1;
 }
 
-bool Graph::checkSameNodes(double x, double y, int index) const {
+bool Graph::checkSameNodesValues(double x, double y, int index) const {
     for (int i=0 ; i<_sNodes; i++) {
         if (i!=index && x==_x[i] && y==_y[i]) {
             return true;
