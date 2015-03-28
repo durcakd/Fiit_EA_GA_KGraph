@@ -21,7 +21,7 @@ public:
     ~Graph();
 
     Graph *clone() const;
-    void setNodes(const double *x, const double *y);
+    void setNodes(const double *x, const double *y, int fitness);
     int getFitness() const;
 
 
@@ -37,6 +37,8 @@ public:
 
 private:
 
+    void edgeBacktrack(int start);
+    bool interfereEdges(double x1, double y1, double x2, double y2);
 
     static int _sNodes;
 

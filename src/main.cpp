@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 
     Graph graph;
     graph.generateNodes();
+    graph.calcFitness();
     qDebug() << graph.toString();
     qDebug() << "----------------";
 
