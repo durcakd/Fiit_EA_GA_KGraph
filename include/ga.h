@@ -2,8 +2,8 @@
 #define GA_H
 
 
-#include "hcinput.h"
-#include "hcoutput.h"
+#include "gainput.h"
+#include "gaoutput.h"
 #include "alpha.h"
 
 //typedef unsigned int uint;
@@ -14,8 +14,8 @@ class GA
 public:
     GA();
 
-    HCOutput optimaze(const HCInput &in);
-    void valuesTable(HCInput &in);
+    GAOutput optimaze(const GAInput &in);
+
 
 };
 

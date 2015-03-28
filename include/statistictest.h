@@ -2,8 +2,8 @@
 #define STATISTICTEST_H
 
 
-#include "hcinput.h"
-#include "hcoutput.h"
+#include "gainput.h"
+#include "gaoutput.h"
 
 class StatisticTest
 {

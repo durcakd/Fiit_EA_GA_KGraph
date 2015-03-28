@@ -1,14 +1,14 @@
-#ifndef HCOUTPUT_H
-#define HCOUTPUT_H
+#ifndef GAOUTPUT_H
+#define GAOUTPUT_H
 
 #include "alpha.h"
 #include <QVector>
 
-class HCOutput
+class GAOutput
 {
 
 public:
-    HCOutput();
+    GAOutput();
 
     bool isSolution;
     double resultFitness;

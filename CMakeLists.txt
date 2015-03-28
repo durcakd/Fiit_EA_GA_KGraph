@@ -1,5 +1,5 @@
 
-set(PROJECT_NAME "GA_KGrahp")
+set(PROJECT_NAME "GA_KGraph")
 project(${PROJECT_NAME} C CXX)
 cmake_minimum_required(VERSION 2.8)
 
