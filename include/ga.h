@@ -4,9 +4,7 @@
 
 #include "gainput.h"
 #include "gaoutput.h"
-#include "alpha.h"
-
-//typedef unsigned int uint;
+#include "graph.h"
 
 class GA
 {

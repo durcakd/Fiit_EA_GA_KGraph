@@ -1,7 +1,7 @@
 #ifndef GAOUTPUT_H
 #define GAOUTPUT_H
 
-#include "alpha.h"
+#include "graph.h"
 #include <QVector>
 
 class GAOutput
