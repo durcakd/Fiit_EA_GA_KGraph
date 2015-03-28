@@ -42,6 +42,8 @@ private:
     void edgeBacktrack(int start, int its, double x1, double y1, double x2, double y2);
     bool interfereEdges(double x1, double y1, double x2, double y2,
                         double x3, double y3, double x4, double y4);
+    bool interfereOrderedEdges(double x1, double y1, double x2, double y2,
+                               double x3, double y3, double x4, double y4);
 
     static int _sNodes;
 

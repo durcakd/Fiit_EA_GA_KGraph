@@ -112,11 +112,44 @@ void Graph::edgeBacktrack(int start, int its,
 }
 
 bool Graph::interfereEdges(double x1, double y1, double x2, double y2,
-                           double x3, double y3, double x4, double y4) {
+                double x3, double y3, double x4, double y4) {
+    if (x1 > x2) {
+        if (x3 > x4) {
+            return interfereOrderedEdges(x2,y2,x1,y1, x4,y4,x3,y3);
+        } else {
+            return interfereOrderedEdges(x2,y2,x1,y1, x3,y3,x4,y4);
+        }
+    } else {
+        if (x3 > x4) {
+            return interfereOrderedEdges(x1,y1,x2,y2, x4,y4,x3,y3);
+        } else {
+            return interfereOrderedEdges(x1,y1,x2,y2, x3,y3,x4,y4);
+        }
+    }
+}
 
+bool Graph::interfereOrderedEdges(double x1, double y1, double x2, double y2,
+                                  double x3, double y3, double x4, double y4) {
+    // must be true that x1<=x2 && x3<=x4
 
+    if (0.0==x2-x1 || 0.0==x4-x3) {
+        qDebug() << "Huston we have a problem";
+    }
 
+    // slopes (smernice)
+    double a1 = (y2-y1)/(x2-x1);
+    double a2 = (y4-y3)/(x4-x3);
 
+    // TODO if (a1-a2)
+
+    double da = a1-a2;
+    if (0.0 != da) {
+        // priesecnik (suradnica x)
+        double x = (a1*x1 -y1 -a2*x3 +y3)/(da);
+
+    } else {
+
+    }
 
 
 
