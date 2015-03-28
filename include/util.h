@@ -9,10 +9,12 @@ public:
     static Util* get();
 
     double nd();
-    double ud();
+    double udD();
+    int uiD();
 
     void setSigma(double sigma);
     void setMean(double mean);
+    void setIntDistUpBound(int ib);
     void resetGenerator();
 
 private:
@@ -25,9 +27,13 @@ private:
     double mean;
     std::normal_distribution<double> *normalDist;
 
-    double a;
-    double b;
-    std::uniform_real_distribution<double> *uniformDist;
+    double dA;
+    double dB;
+    std::uniform_real_distribution<double> *uniRealDist;
+
+    int iA;
+    int iB;
+    std::uniform_int_distribution<int> *uniIntDist;
 };
 #endif
 

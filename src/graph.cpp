@@ -5,7 +5,12 @@
 int Graph::_sNodes;
 
 void Graph::init(int sNodes) {
+    if (sNodes<3) {
+        sNodes = 3;
+    }
     _sNodes = sNodes;
+
+    Util::get()->setIntDistUpBound(sNodes-1);
 }
 
 
@@ -26,8 +31,8 @@ Graph::~Graph() {
 void Graph::generateNodes() {
     _fitnes = -1;
     for (int i=0; i<_sNodes; i++) {
-        _x[i] = Util::get()->ud();
-        _y[i] = Util::get()->ud();
+        _x[i] = Util::get()->udD();
+        _y[i] = Util::get()->udD();
     }
 }
 
@@ -77,7 +82,7 @@ void Graph::edgeBacktrack(int start) {
     if (start+1 < _sNodes) {
         for (int i=start+1 ; i<_sNodes; i++) {
             //bool isInterference = interfereEdges(_x[start], _y[start], _x[i], _y[i]);
-            qDebug() << start<<" x "<< i;
+            //qDebug() << start<<" x "<< i;
             //edgeBacktrack(start, i+1);
             edgeBacktrack(start, i+1,
                           _x[start], _y[start], _x[i], _y[i]);
@@ -90,7 +95,7 @@ void Graph::edgeBacktrack(int start) {
 void Graph::edgeBacktrack(int start, int its) {
     if (start+1 < _sNodes) {
         for (int i=its ; i<_sNodes; i++) {
-            qDebug() <<"   "<<  start<<" x "<< i;
+            //qDebug() <<"   "<<  start<<" x "<< i;
         }
         edgeBacktrack(start+1, start+2);
     }
@@ -105,7 +110,7 @@ void Graph::edgeBacktrack(int start, int its,
             bool interfer = interceptEdges(x1, y1, x2, y2,
                                            _x[start], _y[start], _x[i], _y[i]);
             _fitnes += interfer ? 1 : 0;
-            qDebug() <<"   "<<  start<<" x "<< i << "  " << interfer;
+            //qDebug() <<"   "<<  start<<" x "<< i << "  " << interfer;
         }
         edgeBacktrack(start+1, start+2, x1, y1, x2, y2);
     }
@@ -244,9 +249,28 @@ bool Graph::interceptOrderedEdges2(double x1, double y1, double x2, double y2,
 }
 
 
-//-- mutate --
-void Graph::mutate() {
 
+//----------- mutate ---------------
+void Graph::mutate() {
+    int rindex = Util::get()->uiD();
+    double x,y;
+    do {
+       x = Util::get()->udD();
+       y = Util::get()->udD();
+    } while (checkSameNodes(x, y, rindex));
+
+    _x[rindex] = x;
+    _y[rindex] = y;
+    _fitnes = -1;
+}
+
+bool Graph::checkSameNodes(double x, double y, int index) const {
+    for (int i=0 ; i<_sNodes; i++) {
+        if (i!=index && x==_x[i] && y==_y[i]) {
+            return true;
+        }
+    }
+    return false;
 }
 
 //-- crossover --
