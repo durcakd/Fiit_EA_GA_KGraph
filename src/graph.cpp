@@ -130,6 +130,17 @@ bool Graph::interceptEdges(double x1, double y1, double x2, double y2,
 
 bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
                                   double x3, double y3, double x4, double y4) const {
+    bool res1 = interceptOrderedEdges1(x1,y1,x2,y2, x3,y3,x4,y4);
+    bool res2 = interceptOrderedEdges1(x1,y1,x2,y2, x3,y3,x4,y4);
+    if (res1 != res2) {
+        qDebug() << "Huston we have problem! differen results: "<< res1 <<" "<<res2;
+        qDebug() << x1<<" "<<y1<<" "<<x2<<" "<<y2<<"     "<<x3<<" "<<y3<<" "<<x4<<" "<<y4;
+    }
+    return res2;
+}
+
+bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
+                                  double x3, double y3, double x4, double y4) const {
     // must be true that x1<=x2 && x3<=x4
     // they have not a same one point
 
@@ -138,8 +149,8 @@ bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
     if (0.0==dxA && 0.0==dxB) {
         if (x1==x3) {
             if ((y1<=y3 && y3<=y2) || (y1<=y4 && y4<=y2)) {
-                 qDebug() << "  <Intercept (|| without slope intercept form)";
-                 return true;
+                qDebug() << "  <Intercept1 (|| without slope intercept form)";
+                return true;
             }
         }
     } else if (0.0==dxA) {
@@ -147,26 +158,24 @@ bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
         double qB = y3-a2*x3;
         double y = a2*x1+qB;
         if ((y1<=y && y<=y2) || (y1<=y && y<=y2)) {
-             qDebug() << "  <Intercept (A without slope intercept form)";
-             return true;
+            qDebug() << "  <Intercept1 (A without slope intercept form)";
+            return true;
         }
     } else if (0.0==dxB) {
         double a1 = (y2-y1)/(dxA);
         double qA = y1-a1*x1;
         double y = a1*x3+qA;
         if ((y3<=y && y<=y4) || (y3<=y && y<=y4)) {
-             qDebug() << "  <Intercept (B without slope intercept form)";
-             return true;
+            qDebug() << "  <Intercept1 (B without slope intercept form)";
+            return true;
         }
     } else {
 
         // slopes (smernice)
         double a1 = (y2-y1)/(dxA);
         double a2 = (y4-y3)/(dxB);
-
-        // TODO if (a1-a2)
-
         double da = a1-a2;
+
         if (0.0 != da) {
             // interception point[x,y]
             double x = (a1*x1 -y1 -a2*x3 +y3)/(da);
@@ -180,7 +189,7 @@ bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
             double qA = y1-a1*x1;
             if (((x1<=x3 && x3<=x2) || (x1<=x4 && x4<=x2))
                     && y3==a1*x3+qA) {
-                qDebug() << "  <Intercept (same slopes)";
+                qDebug() << "  <Intercept1 (same slopes)";
                 return true;
             }
         }
@@ -191,9 +200,47 @@ bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
 
 
 bool Graph::interceptOrderedEdges2(double x1, double y1, double x2, double y2,
-                                  double x3, double y3, double x4, double y4) const {
+                                   double x3, double y3, double x4, double y4) const {
 
-    return false;
+    double a1,b1,c1,a2,b2,c2,d,f1,f2,f3,f4;
+    a2 = y4-y3;
+    b2 = x3-x4;
+    c2 = -a2*x3 -b2*y3;
+
+    f1 = a2*x1 +b2*y1 +c2;
+    f2 = a2*x2 +b2*y2 +c2;
+
+    if ((f1>0 && f2>0) || (f1<0 && f2<0)) {
+        return false;			// A,B v rovnakej polrovine priamky CD
+    } else {
+        a1 = y2-y1;
+        b1 = x1-x2;
+        c1 = -a1*x1 -b1*y1;
+
+        f3 = a1*x3 +b1*y3 +c1;
+        f4 = a1*x4 +b1*y4 +c1;
+
+        if((f3>0 && f4>0) || (f3<0 && f4<0)) {
+            return false;  // A,B v rovnakej polrovine priamky CD
+        }
+
+        d = a1*b2 - a2*b1;				//determinant matice
+        if (0.0==d){
+            // su rovnobezne
+            if (a1*c2==a2*c1 && c1*b2==c2*b1) {  // totozne priamky
+                if (((y1<=y3 && y3<=y2) || (y1<=y4 && y4<=y2))
+                        && ((x1<=x3 && x3<=x2) || (x1<=x4 && x4<=x2))) {
+                    qDebug() << "  <Intercept2 (|| without slope intercept form)";
+                    return true;
+                }
+            }
+            return false;
+        }
+        // interception point[x,y]
+        //double x = (b1*c2-b2*c1)/d;
+        //double y = (a2*c1-a1*c2)/d;
+        return true;
+    }
 }
 
 

@@ -44,6 +44,8 @@ private:
                         double x3, double y3, double x4, double y4) const;
     bool interceptOrderedEdges(double x1, double y1, double x2, double y2,
                                double x3, double y3, double x4, double y4) const;
+    bool interceptOrderedEdges1(double x1, double y1, double x2, double y2,
+                               double x3, double y3, double x4, double y4) const;
     bool interceptOrderedEdges2(double x1, double y1, double x2, double y2,
                                double x3, double y3, double x4, double y4) const;
 
