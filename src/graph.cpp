@@ -78,7 +78,9 @@ void Graph::edgeBacktrack(int start) {
         for (int i=start+1 ; i<_sNodes; i++) {
             //bool isInterference = interfereEdges(_x[start], _y[start], _x[i], _y[i]);
             qDebug() << start<<" x "<< i;
-            edgeBacktrack(start, i+1);
+            //edgeBacktrack(start, i+1);
+            edgeBacktrack(start, i+1,
+                          _x[start], _y[start], _x[i], _y[i]);
 
         }
         edgeBacktrack(start+1);
@@ -94,7 +96,23 @@ void Graph::edgeBacktrack(int start, int its) {
     }
 }
 
-bool Graph::interfereEdges(double x1, double y1, double x2, double y2) {
+void Graph::edgeBacktrack(int start, int its,
+                          double x1, double y1, double x2, double y2) {
+
+    if (start+1 < _sNodes) {
+        for (int i=its ; i<_sNodes; i++) {
+
+            bool interfer = interfereEdges(x1, y1, x2, y2,
+                                           _x[start], _y[start], _x[i], _y[i]);
+            _fitnes += interfer ? 1 : 0;
+            qDebug() <<"   "<<  start<<" x "<< i << "  " << interfer;
+        }
+        edgeBacktrack(start+1, start+2, x1, y1, x2, y2);
+    }
+}
+
+bool Graph::interfereEdges(double x1, double y1, double x2, double y2,
+                           double x3, double y3, double x4, double y4) {
 
 
 
