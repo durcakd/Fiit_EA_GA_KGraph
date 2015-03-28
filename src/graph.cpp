@@ -102,7 +102,7 @@ void Graph::edgeBacktrack(int start, int its,
     if (start+1 < _sNodes) {
         for (int i=its ; i<_sNodes; i++) {
 
-            bool interfer = interfereEdges(x1, y1, x2, y2,
+            bool interfer = interceptEdges(x1, y1, x2, y2,
                                            _x[start], _y[start], _x[i], _y[i]);
             _fitnes += interfer ? 1 : 0;
             qDebug() <<"   "<<  start<<" x "<< i << "  " << interfer;
@@ -111,54 +111,90 @@ void Graph::edgeBacktrack(int start, int its,
     }
 }
 
-bool Graph::interfereEdges(double x1, double y1, double x2, double y2,
-                double x3, double y3, double x4, double y4) {
+bool Graph::interceptEdges(double x1, double y1, double x2, double y2,
+                           double x3, double y3, double x4, double y4) const {
     if (x1 > x2) {
         if (x3 > x4) {
-            return interfereOrderedEdges(x2,y2,x1,y1, x4,y4,x3,y3);
+            return interceptOrderedEdges(x2,y2,x1,y1, x4,y4,x3,y3);
         } else {
-            return interfereOrderedEdges(x2,y2,x1,y1, x3,y3,x4,y4);
+            return interceptOrderedEdges(x2,y2,x1,y1, x3,y3,x4,y4);
         }
     } else {
         if (x3 > x4) {
-            return interfereOrderedEdges(x1,y1,x2,y2, x4,y4,x3,y3);
+            return interceptOrderedEdges(x1,y1,x2,y2, x4,y4,x3,y3);
         } else {
-            return interfereOrderedEdges(x1,y1,x2,y2, x3,y3,x4,y4);
+            return interceptOrderedEdges(x1,y1,x2,y2, x3,y3,x4,y4);
         }
     }
 }
 
-bool Graph::interfereOrderedEdges(double x1, double y1, double x2, double y2,
-                                  double x3, double y3, double x4, double y4) {
+bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
+                                  double x3, double y3, double x4, double y4) const {
     // must be true that x1<=x2 && x3<=x4
+    // they have not a same one point
 
-    if (0.0==x2-x1 || 0.0==x4-x3) {
-        qDebug() << "Huston we have a problem";
-    }
-
-    // slopes (smernice)
-    double a1 = (y2-y1)/(x2-x1);
-    double a2 = (y4-y3)/(x4-x3);
-
-    // TODO if (a1-a2)
-
-    double da = a1-a2;
-    if (0.0 != da) {
-        // priesecnik (suradnica x)
-        double x = (a1*x1 -y1 -a2*x3 +y3)/(da);
-
+    double dxA = x2-x1;
+    double dxB = x4-x3;
+    if (0.0==dxA && 0.0==dxB) {
+        if (x1==x3) {
+            if ((y1<=y3 && y3<=y2) || (y1<=y4 && y4<=y2)) {
+                 qDebug() << "  <Intercept (|| without slope intercept form)";
+                 return true;
+            }
+        }
+    } else if (0.0==dxA) {
+        double a2 = (y4-y3)/(dxB);
+        double qB = y3-a2*x3;
+        double y = a2*x1+qB;
+        if ((y1<=y && y<=y2) || (y1<=y && y<=y2)) {
+             qDebug() << "  <Intercept (A without slope intercept form)";
+             return true;
+        }
+    } else if (0.0==dxB) {
+        double a1 = (y2-y1)/(dxA);
+        double qA = y1-a1*x1;
+        double y = a1*x3+qA;
+        if ((y3<=y && y<=y4) || (y3<=y && y<=y4)) {
+             qDebug() << "  <Intercept (B without slope intercept form)";
+             return true;
+        }
     } else {
 
+        // slopes (smernice)
+        double a1 = (y2-y1)/(dxA);
+        double a2 = (y4-y3)/(dxB);
+
+        // TODO if (a1-a2)
+
+        double da = a1-a2;
+        if (0.0 != da) {
+            // interception point[x,y]
+            double x = (a1*x1 -y1 -a2*x3 +y3)/(da);
+
+            if (x1<=x && x<=x2 && x3<=x && x<=x4) {
+                //qDebug() << "  <Intercept!";
+                return true;
+            }
+        } else {
+            // if
+            double qA = y1-a1*x1;
+            if (((x1<=x3 && x3<=x2) || (x1<=x4 && x4<=x2))
+                    && y3==a1*x3+qA) {
+                qDebug() << "  <Intercept (same slopes)";
+                return true;
+            }
+        }
     }
 
-
-
-
-
-    return true;
+    return false;
 }
 
 
+bool Graph::interceptOrderedEdges2(double x1, double y1, double x2, double y2,
+                                  double x3, double y3, double x4, double y4) const {
+
+    return false;
+}
 
 
 //-- mutate --

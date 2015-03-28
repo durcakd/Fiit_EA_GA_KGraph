@@ -40,10 +40,12 @@ private:
     void edgeBacktrack(int start);
     void edgeBacktrack(int start, int its);
     void edgeBacktrack(int start, int its, double x1, double y1, double x2, double y2);
-    bool interfereEdges(double x1, double y1, double x2, double y2,
-                        double x3, double y3, double x4, double y4);
-    bool interfereOrderedEdges(double x1, double y1, double x2, double y2,
-                               double x3, double y3, double x4, double y4);
+    bool interceptEdges(double x1, double y1, double x2, double y2,
+                        double x3, double y3, double x4, double y4) const;
+    bool interceptOrderedEdges(double x1, double y1, double x2, double y2,
+                               double x3, double y3, double x4, double y4) const;
+    bool interceptOrderedEdges2(double x1, double y1, double x2, double y2,
+                               double x3, double y3, double x4, double y4) const;
 
     static int _sNodes;
 
