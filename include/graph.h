@@ -21,11 +21,12 @@ public:
     ~Graph();
 
     Graph *clone() const;
+    void setNodes(const double *x, const double *y);
     int getFitness() const;
 
 
     bool calcFitness();
-    void generate();
+    void generateNodes();
     void mutate();
     void crossover(const Graph &in2, Graph &out1, Graph &out2) const;
 

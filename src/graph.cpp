@@ -9,54 +9,71 @@ void Graph::init(int sNodes) {
 }
 
 
-//-- constructor
+//-- constructor --
 Graph::Graph() {
     _fitnes = -1;
     _x = new double[_sNodes];
     _y = new double[_sNodes];
 }
 
-//-- destructor
+//-- destructor --
 Graph::~Graph() {
     delete _x;
     delete _y;
 }
 
-//-- clone
+//-- clone --
 Graph *Graph::clone() const {
     Graph *cloned = new Graph;
-
+    cloned->setNodes(_x, _y);
 
     return cloned;
 }
 
-//-- to String
+//-- setNodes --
+void Graph::setNodes(const double *x, const double *y) {
+    for (int i=0; i<_sNodes; i++) {
+        _x[i] = x[i];
+        _y[i] = y[i];
+
+    }
+}
+
+//-- to String --
 QString Graph::toString() const {
     QString s = "F= " + QString::number(getFitness());
+
+    for (int i=0; i<_sNodes; i++) {
+        s += " ("+QString::number(_x[i])+" "+QString::number(_y[i])+")";
+    }
     return s;
 }
 
-//-- get fitness
+//-- get fitness --
 int Graph::getFitness() const {
     return _fitnes;
 }
 
-// calc fitness
+// calc fitness --
 bool Graph::calcFitness() {
     return true;
 }
 
-//-- generate
-void Graph::generate() {
-
+//-- generate --
+void Graph::generateNodes() {
+    _fitnes = -1;
+    for (int i=0; i<_sNodes; i++) {
+        _x[i] = Util::get()->ud();
+        _y[i] = Util::get()->ud();
+    }
 }
 
-//-- mutate
+//-- mutate --
 void Graph::mutate() {
 
 }
 
-// crossover
+//-- crossover --
 void Graph::crossover(const Graph &in2, Graph &out1, Graph &out2) const {
 
 }
