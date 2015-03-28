@@ -28,9 +28,9 @@ if( USE_STRICT_COMPILE_WARNINGS )
 endif()
 
 # Debug is default
-#if( NOT CMAKE_BUILD_TYPE )
-#    set( CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE ) #MinSizeRel
-#endif()
+if( NOT CMAKE_BUILD_TYPE )
+    set( CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE ) #MinSizeRel
+endif()
 message("CMAKE_BUILD_TYPE ::" ${CMAKE_BUILD_TYPE})
 
 add_definitions(
@@ -46,7 +46,6 @@ add_definitions(
 ### Qt5
 set(CMAKE_AUTOMOC ON)
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5PrintSupport REQUIRED)
 
 # ------------
 # Source files
@@ -73,16 +72,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
 
 message("add_executable of ::" ${PROJECT_NAME})
 
-
-#add_library( libqcustomplot SHARED IMPORTED )
-#set_target_properties( libqcustomplot PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/res/libqcustomplot.so )
-
-
 add_executable( ${PROJECT_NAME}  ${INCL} ${SRC})
 
 target_link_libraries( ${PROJECT_NAME}
                         Qt5::Widgets
-#                        libqcustomplot
                         )
 
 
