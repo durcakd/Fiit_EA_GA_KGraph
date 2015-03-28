@@ -18,43 +18,43 @@ public:
     Alpha(uint value);
     Alpha(double realValue);
 
-    static void init(bool isgray, double a, double b, unsigned int k, unsigned int mutbits);
+//    static void init(bool isgray, double a, double b, unsigned int k, unsigned int mutbits);
 
-    double fitness();
+//    double fitness();
 
-    uint value();
-    void setValue(uint value);
-    double realValue();
-    QString printBin();
+//    uint value();
+//    void setValue(uint value);
+//    double realValue();
+//    QString printBin();
 
-    uint negateBit(uint i);
-    uint negateBit(uint value, uint i);
-    void clearRandArray();
+//    uint negateBit(uint i);
+//    uint negateBit(uint value, uint i);
+//    void clearRandArray();
 
-    bool checkSolution(double fitness);
-    bool checkSolution();
-    QString toString();
-
-
-    std::vector<Alpha*>* getNeighborsAll(int count);
-    std::vector<Alpha*>* getNeighborsRandom(int count);
-
-private:
-
-    //  mutation();
+//    bool checkSolution(double fitness);
+//    bool checkSolution();
+//    QString toString();
 
 
-    static bool   _isgray;
-    static double _a;
-    static double _b;
-    static unsigned int _k;
-    static unsigned int _mutbits;
-    static unsigned int _pow2tokm1;
-    static double _mindiff;
-    static double _mindiffFitness;
-    static bool* _randBitIndex;
+//    std::vector<Alpha*>* getNeighborsAll(int count);
+//    std::vector<Alpha*>* getNeighborsRandom(int count);
 
-    uint _value;
+//private:
+
+//    //  mutation();
+
+
+//    static bool   _isgray;
+//    static double _a;
+//    static double _b;
+//    static unsigned int _k;
+//    static unsigned int _mutbits;
+//    static unsigned int _pow2tokm1;
+//    static double _mindiff;
+//    static double _mindiffFitness;
+//    static bool* _randBitIndex;
+
+//    uint _value;
 
 };
 

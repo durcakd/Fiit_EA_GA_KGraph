@@ -11,6 +11,7 @@ const int C_S_ELIT = 10;
 const int C_S_CROSS = 40;
 const int C_S_MUT = 40;
 const int C_S_NEW = 10;
+const double C_SIGMA = 0.1;
 
 class GAInput
 {

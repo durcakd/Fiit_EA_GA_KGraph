@@ -1,55 +1,27 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <random>
+#include <time.h>
 
-#include <math.h>
-#include <QDebug>
-
-class Util
-{
-
+class Util {
 public:
-    inline Util(){}
+    static Util* get();
 
-    static unsigned int pow2tokm1(unsigned int k) {
-        return pow(2,k)-1;
-    }
+    double nd();
 
-    static double binToReal(double a, double b, unsigned int pow2tokm1, unsigned int bin) {
-        return a + (b-a)*bin / pow2tokm1;
-    }
+    void setSigma(double sigma);
+    void setMean(double mean);
+    void resetGenerator();
 
-    static double realToBin(double a, double b, unsigned int pow2tokm1, double real) {
-        return ceilf( (real-a)*pow2tokm1/(b-a));
-    }
+private:
+    inline Util();
+    static Util *instance;
 
-    static double minDiff(double a, double b, unsigned int pow2tokm1) {
-        return (b-a) / pow2tokm1;
-    }
-
-    // initial binary ( binaryToGray(0.5))
-    // fitness(grayToBinary(x))
-
-    static unsigned int binaryToGray(unsigned int num) {
-        return (num >> 1) ^ num;
-    }
-
-    static unsigned int grayToBinary(unsigned int num) {
-        unsigned int mask;
-        for (mask = num >> 1; mask != 0; mask = mask >> 1) {
-            num = num ^ mask;
-        }
-        return num;
-    }
-
-    static QString str(double real) {
-        return QString::number(real,'f',8);
-    }
-
-    static QString bits(unsigned int val, unsigned int k) {
-        return QString::number( val, 2).rightJustified(k, '0');
-    }
-
+    double sigma;
+    double mean;
+    std::default_random_engine generator;
+    std::normal_distribution<double> *distribution;
 };
-
 #endif
+
