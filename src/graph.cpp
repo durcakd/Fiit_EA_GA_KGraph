@@ -130,9 +130,9 @@ void Graph::edgeBacktrack(int start, int its,
                 //qDebug()<< "        "<< node1<<"-"<<node2<<" "<<start<<"-"<<i<<"      "  << interfer << "    "<< sameNodes;
 
                 if (sameNodes) {
-                            qDebug() << "Specia same node case : ";
-                            qDebug() << int(100*x1)<<" "<<int(100*y1)<<" "<<int(100*x2)<<" "<<int(100*y2)\
-                                     <<"     "<<int(100*_x[start])<<" "<<int(100*_y[start])<<" "<<int(100*_x[i])<<" "<<int(100*_y[i]);
+                    qDebug() << "Specia same node case : ";
+                    qDebug() << int(100*x1)<<" "<<int(100*y1)<<" "<<int(100*x2)<<" "<<int(100*y2)\
+                             <<"     "<<int(100*_x[start])<<" "<<int(100*_y[start])<<" "<<int(100*_x[i])<<" "<<int(100*_y[i]);
                 }
             }
         }
@@ -170,7 +170,7 @@ bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
 }
 
 bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
-                                  double x3, double y3, double x4, double y4, bool hasSameNodes) const {
+                                   double x3, double y3, double x4, double y4, bool hasSameNodes) const {
     // must be true that x1<=x2 && x3<=x4
     // they have not a same one point
     double dxA = x2-x1;
@@ -195,7 +195,7 @@ bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
         double qA = y1-a1*x1;
         double y = a1*x3+qA;
         if ((y3<=y && y<=y4) || (y3<=y && y<=y4)) {
-            qDebug() << "  <Intercept1 (B without slope intercept form)";
+            //qDebug() << "  <Intercept1 (B without slope intercept form)";
             return true;
         }
     } else {
@@ -205,13 +205,15 @@ bool Graph::interceptOrderedEdges1(double x1, double y1, double x2, double y2,
         double a2 = (y4-y3)/(dxB);
         double da = a1-a2;
 
-        if (!hasSameNodes && 0.0 != da) {
+        if (0.0 != da) {
             // interception point[x,y]
-            double x = (a1*x1 -y1 -a2*x3 +y3)/(da);
+            if (!hasSameNodes) {
+                double x = (a1*x1 -y1 -a2*x3 +y3)/(da);
 
-            if (x1<=x && x<=x2 && x3<=x && x<=x4) {
-                //qDebug() << "  <Intercept1!";
-                return true;
+                if (x1<=x && x<=x2 && x3<=x && x<=x4) {
+                    //qDebug() << "  <Intercept1!";
+                    return true;
+                }
             }
         } else {
             // if
@@ -288,8 +290,8 @@ void Graph::mutate() {
     int rindex = Util::get()->uiD();
     double x,y;
     do {
-       x = Util::get()->udD();
-       y = Util::get()->udD();
+        x = Util::get()->udD();
+        y = Util::get()->udD();
     } while (checkSameNodesValues(x, y, rindex));
 
     _x[rindex] = x;

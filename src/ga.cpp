@@ -82,9 +82,7 @@ GAOutput GA::optimize(const GAInput &in)
         // NEW BLOOD
         newBlood( in.sNew, newPopList);
 
-
         // full clear of old population
-
 
         for (unsigned int i=0; i<newPopList.size(); i++) {
             Graph *g = newPopList.at(i);
@@ -103,7 +101,7 @@ GAOutput GA::optimize(const GAInput &in)
         newPopList.clear();
 
 
-        qDebug() <<"---------"<< genit <<"  BF="<<bestFitness;
+        qDebug() <<"---------"<< genit <<"  BF="<<bestFitness << "   FC="<< fitnessCounter;
     }
 
     return out;
@@ -169,6 +167,9 @@ void GA::newBlood(int count, std::vector<Graph*> &newPopList) {
         newPopList.push_back( g);
     }
 }
+
+
+
 
 void GA::completeClearPop(std::vector<Graph*> &popList) {
     if( !popList.empty()) {
