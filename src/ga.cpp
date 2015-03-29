@@ -63,11 +63,11 @@ GAOutput GA::optimize(const GAInput &in)
     for (int genit=0; genit<in.cGen; genit++) {
         qDebug() << genit << ". ==================================";
         std::sort (popList.begin(), popList.end(), GraphComparator);
-        printPop(popList);
+        //printPop(popList);
 
 
         // clear new population
-        clearPop(newPopList);
+        //completeClearPop(newPopList);
 
 
         // ELITE
@@ -81,6 +81,26 @@ GAOutput GA::optimize(const GAInput &in)
 
         // NEW BLOOD
         newBlood( in.sNew, newPopList);
+
+
+        // full clear of old population
+
+
+        for (unsigned int i=0; i<newPopList.size(); i++) {
+            Graph *g = newPopList.at(i);
+            fitnessCounter += g->calcFitness();
+
+            if (g->getFitness() < bestFitness) {
+                bestFitness = g->getFitness();
+                bestGraph = g->clone();
+            }
+        }
+
+        completeClearPop(popList);
+        for (unsigned int i=0; i<newPopList.size(); i++) {
+            popList.push_back( newPopList.at(i));
+        }
+        newPopList.clear();
 
 
         qDebug() <<"---------"<< genit <<"  BF="<<bestFitness;
@@ -150,9 +170,9 @@ void GA::newBlood(int count, std::vector<Graph*> &newPopList) {
     }
 }
 
-void GA::clearPop(std::vector<Graph*> &popList) {
+void GA::completeClearPop(std::vector<Graph*> &popList) {
     if( !popList.empty()) {
-        qDebug() << "pop size before clear"<< popList.size();
+        //qDebug() << "pop size before clear"<< popList.size();
         //printPop(popList);
         for (unsigned int i=0; i<popList.size(); i++) {
             const Graph *g = popList.at(i);

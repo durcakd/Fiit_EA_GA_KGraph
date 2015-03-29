@@ -22,7 +22,7 @@ private:
 
    // const Graph *getRandomGraph(std::vector<Graph*> &popList) const;
     const Graph *getTournamentGraph(int tournamentSize, std::vector<Graph*> &popList) const;
-    void clearPop(std::vector<Graph*> &popList);
+    void completeClearPop(std::vector<Graph*> &popList);
     void printPop(std::vector<Graph*> &popList) const;
 };
 
