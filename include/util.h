@@ -16,7 +16,7 @@ public:
     void setSigma(double sigma);
     void setMean(double mean);
     void setIntDistUpBound(int ib);
-    void setPopSize(int popSize);
+    void setPopSize(int pPopSize);
     void resetGenerator();
 
 private:

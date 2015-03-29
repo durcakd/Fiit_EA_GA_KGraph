@@ -46,11 +46,11 @@ void Util::setIntDistUpBound(int ib) {
     uniIntDist = new std::uniform_int_distribution<int>(iA,iB);
 }
 
-void Util::setPopSize(int popSize) {
-    if (popSize<1) {
-        popSize = 1;
+void Util::setPopSize(int pPopSize) {
+    if (pPopSize<1) {
+        pPopSize = 1;
     }
-    this->popSize = popSize-1;
+    popSize = pPopSize-1;
     delete  popDist;
     popDist = new std::uniform_int_distribution<int>(0,popSize);
 }

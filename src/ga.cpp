@@ -25,6 +25,7 @@ GAOutput GA::optimize(const GAInput &in)
     GAOutput out;
     out.isSolution = false;
     Graph::init(in.cNodes);
+    Util::get()->setPopSize(in.cPop);
 
     if (in.sElit+in.sCross+in.sMut+in.sNew != in.cPop ) {
         qDebug() << "WARNING wrong population sizes"; return out; }
@@ -121,17 +122,18 @@ void GA::mutation(int count, int tournamentSize, std::vector<Graph*> &sortedPopL
 }
 
 const Graph *GA::getTournamentGraph(int tournamentSize, std::vector<Graph*> &popList) const {
+
     int randi = Util::get()->randomGraphIndex();
     const Graph *winner = popList.at(randi);
-
+    //qDebug() << "Tournament "<< tournamentSize << "   F="<<winner->getFitness();
     for (int i=1; i<tournamentSize; i++) {
         randi = Util::get()->randomGraphIndex();
         Graph *challenger = popList.at(randi);
         if (winner->getFitness() > challenger->getFitness()) {
             winner = challenger;
+            //qDebug() << "  winner changed    F= "<<winner->getFitness();
         }
     }
-
     return winner;
 }
 
