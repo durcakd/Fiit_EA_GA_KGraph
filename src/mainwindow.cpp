@@ -183,7 +183,7 @@ QGridLayout *MainWindow::createParamLayout() {
 
 
     QIntValidator *ssValidator     = new QIntValidator(1, 50, this);
-    QIntValidator *pValidator     = new QIntValidator(1, 100, this);
+    QIntValidator *pValidator     = new QIntValidator(0, 100, this);
     QIntValidator *mValidator     = new QIntValidator(1, 100000, this);
     QDoubleValidator *dValidator  = new QDoubleValidator(0.0, 1.0, 4, this);
     cNodesLE->setValidator( ssValidator);
@@ -235,6 +235,9 @@ GAInput MainWindow::getParams() {
                        sTourMutLE->text().toInt(),
                        mutProbability );
     }
+    promtL1.setText("! Not valid parameters !");
+    promtL2.setText("You should try set them again");
+    promtL3.setText("  or restart computer 3 times");
     qDebug() << "WARNING: not valid input parameter, who knows which one :)";
     return GAInput();
 }
