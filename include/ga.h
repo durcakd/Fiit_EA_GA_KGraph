@@ -15,9 +15,9 @@ public:
     GAOutput optimize(const GAInput &in);
 
 private:
-    void elite(int count, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList);
+    void elite(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList);
     void crossover(int count, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList);
-    void mutation(int count, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList);
+    void mutation(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList);
     void newBlood(int count, std::vector<Graph*> &newPopList);
 
     void printPop(std::vector<Graph*> &popList);
