@@ -12,17 +12,25 @@ int main(int argc, char *argv[])
     MainWindow window;
     window.show();
 
-    Graph::init(9);
+    Graph::init(5);
 
-    Graph graph;
-    graph.generateNodes();
-    graph.calcFitness();
-    qDebug() << graph.toString();
+    Graph g1;
+    Graph g2;
+    g1.generateNodes();
+    g2.generateNodes();
+
+    //g1.calcFitness();
+    qDebug() << g1.toString();
+    qDebug() << g2.toString();
     qDebug() << "----------------";
 
-    //graph.mutate();
-    //graph.calcFitness();
-    //qDebug() << graph.toString();
+    Graph *g3 = new Graph;
+    Graph *g4 = new Graph;
+
+    g1.crossover(g2, *g3, *g4);
+
+    qDebug() << g3->toString();
+    qDebug() << g4->toString();
     qDebug() << "----------------";
 
     return app.exec();

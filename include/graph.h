@@ -22,6 +22,9 @@ public:
 
     Graph *clone() const;
     void setNodes(const double *x, const double *y, int fitness);
+    void setNodes(const double *x, const double *y, int start, int end);
+    inline const double *x() const {return _x;}
+    inline const double *y() const {return _y;}
     int getFitness() const;
 
 

@@ -10,7 +10,7 @@ void Graph::init(int sNodes) {
     }
     _sNodes = sNodes;
 
-    Util::get()->setIntDistUpBound(sNodes-1);
+    Util::get()->setIntDistUpBound(sNodes);
 }
 
 
@@ -50,6 +50,19 @@ void Graph::setNodes(const double *x, const double *y, int fitness) {
         _x[i] = x[i];
         _y[i] = y[i];
 
+    }
+}
+
+void Graph::setNodes(const double *x, const double *y, int start, int end) {
+    if (end > _sNodes) {
+        end = _sNodes;
+    }
+    if (start < 0) {
+        start = 0;
+    }
+    for (int i=start; i<end; i++) {
+        _x[i] = x[i];
+        _y[i] = y[i];
     }
 }
 
@@ -295,6 +308,14 @@ bool Graph::checkSameNodesValues(double x, double y, int index) const {
 
 //-- crossover --
 void Graph::crossover(const Graph &in2, Graph &out1, Graph &out2) const {
-
+    int rindex;
+    do {
+        rindex = Util::get()->uiD();
+    } while (0 == rindex);
+    qDebug() << rindex;
+    out1.setNodes(_x, _y,           0, rindex);
+    out2.setNodes(in2.x(), in2.y(), 0, rindex);
+    out1.setNodes(in2.x(), in2.y(), rindex, _sNodes);
+    out2.setNodes(_x, _y,           rindex, _sNodes);
 }
 

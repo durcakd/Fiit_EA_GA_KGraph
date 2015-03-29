@@ -35,7 +35,10 @@ void Util::setMean(double mean) {
 }
 
 void Util::setIntDistUpBound(int ib) {
-    this->iB = ib;
+    if (ib<3) {
+        ib = 3;
+    }
+    this->iB = ib-1;
     delete  uniIntDist;
     uniIntDist = new std::uniform_int_distribution<int>(iA,iB);;
 }
