@@ -5,8 +5,8 @@
 
 const int C_NODES = 5;
 const int C_MAX_TEST = 100;
-const int C_MAX_GEN = 100;
-const int C_MAX_POP = 100;
+const int C_MAX_GEN = 2;
+const int C_MAX_POP = 20;
 const int C_S_ELIT = 10;
 const int C_S_CROSS = 40;
 const int C_S_MUT = 40;

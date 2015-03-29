@@ -1,7 +1,8 @@
 #include "ga.h"
 
-#include <math.h>
+//#include <math.h>
 #include <vector>
+#include <algorithm>
 
 #include <QDebug>
 #include "util.h"
@@ -10,6 +11,12 @@ GA::GA()
 {
 }
 
+
+struct comparator {
+  bool operator() (const Graph *g1, const Graph *g2) {
+      return (g1->getFitness() >= g2->getFitness());
+  }
+} GraphComparator;
 
 
 GAOutput GA::optimize(const GAInput &in)
@@ -26,23 +33,27 @@ GAOutput GA::optimize(const GAInput &in)
     //out.resultFitness = 100000000;
     //out.fitnessCount = 0;
 
-    std::vector<Graph*> popList(in.cPop);
+    std::vector<Graph*> popList;
     for (int i=0; i< in.cPop; i++) {
         Graph *g = new Graph();
         g->generateNodes();
-        popList.push_back( g);
-
         fitnessCounter += g->calcFitness();
+
         if (g->getFitness() < bestFitness) {
             bestFitness = g->getFitness();
             bestGraph = g->clone();
         }
+
+        popList.push_back( g);
     }
 
+    qDebug() << "best "<<bestGraph->toString();
 
     for (int genit=0; genit<in.cGen; genit++) {
+        std::sort (popList.begin(), popList.end(), GraphComparator);
+        printPop(popList);
 
-        std::vector<Graph*> newPopList(in.cPop);
+        std::vector<Graph*> newPopList();
 
         // ELITE
         elite(in.sElit, popList, newPopList);
@@ -63,7 +74,7 @@ GAOutput GA::optimize(const GAInput &in)
     return out;
 }
 
-void GA::elite(int count, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList) {
+void GA::elite(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i++) {
 
     }
@@ -75,7 +86,7 @@ void GA::crossover(int count, std::vector<Graph*> &popList, std::vector<Graph*> 
     }
 }
 
-void GA::mutation(int count, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList) {
+void GA::mutation(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i++) {
 
     }
@@ -86,5 +97,13 @@ void GA::newBlood(int count, std::vector<Graph*> &newPopList) {
         Graph *g = new Graph();
         g->generateNodes();
         newPopList.push_back( g);
+    }
+}
+
+
+void GA::printPop(std::vector<Graph*> &popList) {
+    for (unsigned int i=0; i<popList.size(); i++) {
+        const Graph *g = popList.at(i);
+        qDebug() << g->toString();
     }
 }

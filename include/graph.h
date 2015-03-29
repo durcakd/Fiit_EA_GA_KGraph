@@ -9,7 +9,6 @@
 #include <QDebug>
 #include <bitset>
 
-const double C = 0.01;
 
 class Graph {
 
@@ -63,6 +62,13 @@ private:
     double *_y;
     int _fitnes;
 };
+
+
+//bool compare (const Graph *g1, const Graph *g2) {
+//    return (g1->getFitness() > g2->getFitness());
+//}
+
+
 
 #endif
 

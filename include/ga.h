@@ -20,6 +20,7 @@ private:
     void mutation(int count, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList);
     void newBlood(int count, std::vector<Graph*> &newPopList);
 
+    void printPop(std::vector<Graph*> &popList);
 };
 
 #endif
