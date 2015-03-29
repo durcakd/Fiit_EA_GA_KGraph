@@ -7,10 +7,10 @@ const int C_NODES = 5;
 const int C_MAX_TEST = 100;
 const int C_MAX_GEN = 2;
 const int C_MAX_POP = 20;
-const int C_S_ELIT = 10;
-const int C_S_CROSS = 40;
-const int C_S_MUT = 40;
-const int C_S_NEW = 10;
+const int C_S_ELIT = 3;
+const int C_S_CROSS = 8;
+const int C_S_MUT = 6;
+const int C_S_NEW = 3;
 const double C_SIGMA = 0.1;
 
 class GAInput

@@ -312,7 +312,7 @@ void Graph::crossover(const Graph &in2, Graph &out1, Graph &out2) const {
     do {
         rindex = Util::get()->uiD();
     } while (0 == rindex);
-    qDebug() << rindex;
+    //qDebug() << rindex;
     out1.setNodes(_x, _y,           0, rindex);
     out2.setNodes(in2.x(), in2.y(), 0, rindex);
     out1.setNodes(in2.x(), in2.y(), rindex, _sNodes);

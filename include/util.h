@@ -11,10 +11,12 @@ public:
     double nd();
     double udD();
     int uiD();
+    int randomGraphIndex();
 
     void setSigma(double sigma);
     void setMean(double mean);
     void setIntDistUpBound(int ib);
+    void setPopSize(int popSize);
     void resetGenerator();
 
 private:
@@ -34,6 +36,9 @@ private:
     int iA;
     int iB;
     std::uniform_int_distribution<int> *uniIntDist;
+
+    int popSize;
+    std::uniform_int_distribution<int> *popDist;
 };
 #endif
 

@@ -22,7 +22,15 @@ struct comparator {
 GAOutput GA::optimize(const GAInput &in)
 {
     qDebug() <<"====================================";
+    GAOutput out;
+    out.isSolution = false;
     Graph::init(in.cNodes);
+
+    if (in.sElit+in.sCross+in.sMut+in.sNew != in.cPop ) {
+        qDebug() << "WARNING wrong population sizes"; return out; }
+    if (in.sCross%2 != 0 ) {
+        qDebug() << "WARNING wrong crossover size"; return out; }
+
 
     int     fitnessCounter = 0;
     int     bestFitness = 10000000;
@@ -30,8 +38,7 @@ GAOutput GA::optimize(const GAInput &in)
     std::vector<Graph*>  popList;
     std::vector<Graph*> newPopList;
 
-    GAOutput out;
-    out.isSolution = false;
+
     //out.resultFitness = 100000000;
     //out.fitnessCount = 0;
 
@@ -53,25 +60,13 @@ GAOutput GA::optimize(const GAInput &in)
     qDebug() << "best "<<bestGraph->toString();
 
     for (int genit=0; genit<in.cGen; genit++) {
-        qDebug() << "NEW GENERATION";
+        qDebug() << genit << ". ==================================";
         std::sort (popList.begin(), popList.end(), GraphComparator);
         printPop(popList);
 
-        qDebug() << "Manage new";
-        if( !newPopList.empty()) {
-          qDebug() << "new " << newPopList.size();
-            //printPop(newPopList);
 
-            for (unsigned int i=0; i<popList.size(); i++) {
-                const Graph *g = popList.at(i);
-                delete g;
-            }
-
-            newPopList.clear();
-            qDebug() << "new after clear " << newPopList.size();
-            printPop(newPopList);
-        }
-
+        // clear new population
+        clearPop(newPopList);
 
 
         // ELITE
@@ -95,21 +90,39 @@ GAOutput GA::optimize(const GAInput &in)
 
 void GA::elite(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i++) {
-
-
+        const Graph *g = sortedPopList.at(i);
+        Graph *cloned = g->clone();
+        newPopList.push_back(cloned);
     }
 }
 
 void GA::crossover(int count, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList) {
-    for (int i=0; i<count; i++) {
+    for (int i=0; i<count; i+=2) {
+        const Graph *g1 = getRandomGraph( popList);
+        const Graph *g2 = getRandomGraph( popList);
+
+        Graph *ng1 = new Graph();
+        Graph *ng2 = new Graph();
+
+        g1->crossover( *g2, *ng1, *ng2);
+        newPopList.push_back( ng1);
+        newPopList.push_back( ng2);
 
     }
 }
 
 void GA::mutation(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i++) {
-
+        const Graph *g = getRandomGraph( sortedPopList);
+        Graph *cloned = g->clone();
+        cloned->mutate(); // TODO which mutation?
+        newPopList.push_back( cloned);
     }
+}
+
+const Graph *GA::getRandomGraph(std::vector<Graph*> &popList) const {
+    int i = Util::get()->randomGraphIndex();
+    return popList.at(i);
 }
 
 void GA::newBlood(int count, std::vector<Graph*> &newPopList) {
@@ -120,8 +133,19 @@ void GA::newBlood(int count, std::vector<Graph*> &newPopList) {
     }
 }
 
+void GA::clearPop(std::vector<Graph*> &popList) {
+    if( !popList.empty()) {
+        qDebug() << "pop size before clear"<< popList.size();
+        //printPop(popList);
+        for (unsigned int i=0; i<popList.size(); i++) {
+            const Graph *g = popList.at(i);
+            delete g;
+        }
+        popList.clear();
+    }
+}
 
-void GA::printPop(std::vector<Graph*> &popList) {
+void GA::printPop(std::vector<Graph*> &popList) const {
     for (unsigned int i=0; i<popList.size(); i++) {
         const Graph *g = popList.at(i);
         qDebug() << g->toString();
