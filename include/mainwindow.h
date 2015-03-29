@@ -23,6 +23,9 @@ public:
 
 public slots:
     void runTest();
+    void cNodesLEChanged(QString text);
+    void bUseProbMutChanged(bool checked);
+    void bUseAutoProbChanged(bool checked);
 
 private:
     QGridLayout *createParamLayout();
@@ -49,6 +52,9 @@ private:
     QLineEdit *sNewLE;
     QLineEdit *sTourCrossLE;
     QLineEdit *sTourMutLE;
+    QLineEdit *sMutProbLE;
+    QCheckBox *bUseProbMutCB;
+    QCheckBox *bUseAutoProbCB;
 
     QRadioButton *ga1RB;
     QRadioButton *ga2RB;
@@ -64,6 +70,9 @@ sMut
 sNew
 sTourCross
 sTourMut
+sMutProb
+bUseProbMut
+bUseAutoProb
 */
 };
 

@@ -51,6 +51,12 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect( runTestPB, SIGNAL(clicked()),
                       this, SLOT(runTest()));
 
+    QObject::connect( cNodesLE, SIGNAL(textChanged(QString)),
+                      this, SLOT(cNodesLEChanged(QString)));
+    QObject::connect( bUseProbMutCB, SIGNAL(clicked(bool)),
+                      this, SLOT(bUseProbMutChanged(bool)));
+    QObject::connect( bUseAutoProbCB, SIGNAL(clicked(bool)),
+                      this, SLOT(bUseAutoProbChanged(bool)));
     runTest();
 }
 
@@ -64,13 +70,38 @@ void MainWindow::runTest() {
     GA ga;
     ga.optimize(input);
 
-//    promtL1.setText("Success rate: "+QString::number(((double)output.solutions*100)/input.testmax)+"%");
-//    promtL2.setText("Mean fitness: "+QString::number(output.meanFitness, 'f', 10));
-//    promtL3.setText("Mean fitness call: "+QString::number(output.meanFitnessCall, 'f', 0));
+    //    promtL1.setText("Success rate: "+QString::number(((double)output.solutions*100)/input.testmax)+"%");
+    //    promtL2.setText("Mean fitness: "+QString::number(output.meanFitness, 'f', 10));
+    //    promtL3.setText("Mean fitness call: "+QString::number(output.meanFitnessCall, 'f', 0));
 }
 
 
-
+void MainWindow::cNodesLEChanged(QString text) {
+    int value = text.toInt();
+    if (bUseAutoProbCB->isChecked() && 0!=value){
+        sMutProbLE->setText(QString::number( (100/value)/100.0 ));
+    }
+}
+void MainWindow::bUseProbMutChanged(bool checked) {
+    if (!checked) {
+        bUseAutoProbCB->setEnabled(false);
+        sMutProbLE->setEnabled(false);
+    } else {
+        bUseAutoProbCB->setEnabled(true);
+        if (bUseAutoProbCB->isChecked()) {
+            sMutProbLE->setEnabled(false);
+        } else {
+            sMutProbLE->setEnabled(true);
+        }
+    }
+}
+void MainWindow::bUseAutoProbChanged(bool checked) {
+    if (checked) {
+        sMutProbLE->setEnabled(false);
+    } else {
+        sMutProbLE->setEnabled(true);
+    }
+}
 
 QGroupBox *MainWindow::createFirstExclusiveGroup() {
     QGroupBox *groupBox = new QGroupBox();
@@ -99,6 +130,7 @@ QGridLayout *MainWindow::createParamLayout() {
     QLabel *sNewL = new QLabel(tr("New ratio"));
     QLabel *sTourCrossL = new QLabel(tr("Cross tourney size"));
     QLabel *sTourMutL = new QLabel(tr("Mut tourney size"));
+    QLabel *sMutProbL = new QLabel(tr("Mut probability"));
 
     cNodesLE    = new QLineEdit(QString::number( C_NODES ));
     cTestLE     = new QLineEdit(QString::number( C_MAX_TEST ));
@@ -110,6 +142,12 @@ QGridLayout *MainWindow::createParamLayout() {
     sNewLE      = new QLineEdit(QString::number( C_S_NEW ));
     sTourCrossLE    = new QLineEdit(QString::number( C_S_TOURNEY_CROSS ));
     sTourMutLE      = new QLineEdit(QString::number( C_S_TOURNEY_MUT ));
+    sMutProbLE      = new QLineEdit(QString::number( (100/C_NODES)/100.0 ));
+    bUseProbMutCB   = new QCheckBox(tr("Use probability mut"));
+    bUseAutoProbCB     = new QCheckBox(tr("Auto probability"));
+    bUseProbMutCB->setChecked(true);
+    bUseAutoProbCB->setChecked(true);
+    sMutProbLE->setEnabled(false);
 
     QGridLayout *paramLayout = new QGridLayout();
 
@@ -123,6 +161,8 @@ QGridLayout *MainWindow::createParamLayout() {
     paramLayout->addWidget( sNewL,        7,0 );
     paramLayout->addWidget( sTourCrossL,8,0 );
     paramLayout->addWidget( sTourMutL,  9,0 );
+    paramLayout->addWidget( sMutProbL,  11,0 );
+
 
 
     paramLayout->addWidget( cNodesLE,   0,1 );
@@ -136,9 +176,16 @@ QGridLayout *MainWindow::createParamLayout() {
     paramLayout->addWidget( sTourCrossLE,8,1 );
     paramLayout->addWidget( sTourMutLE,  9,1 );
 
+    paramLayout->addWidget( bUseProbMutCB,  10,0 );
+    paramLayout->addWidget( bUseAutoProbCB, 10,1 );
+    paramLayout->addWidget( sMutProbLE,  11,1 );
+
+
+
     QIntValidator *ssValidator     = new QIntValidator(1, 50, this);
     QIntValidator *pValidator     = new QIntValidator(1, 100, this);
     QIntValidator *mValidator     = new QIntValidator(1, 100000, this);
+    QDoubleValidator *dValidator  = new QDoubleValidator(0.0, 1.0, 4, this);
     cNodesLE->setValidator( ssValidator);
     cTestLE->setValidator( mValidator);
     cGenLE->setValidator( mValidator);
@@ -149,6 +196,8 @@ QGridLayout *MainWindow::createParamLayout() {
     sNewLE->setValidator( pValidator);
     sTourCrossLE->setValidator( ssValidator);
     sTourMutLE->setValidator( ssValidator);
+    sMutProbLE->setValidator( dValidator);
+
 
     return paramLayout;
 }
@@ -163,8 +212,17 @@ GAInput MainWindow::getParams() {
          sMutLE->hasAcceptableInput() &&
          sNewLE->hasAcceptableInput() &&
          sTourCrossLE->hasAcceptableInput() &&
-         sTourMutLE->hasAcceptableInput()) {
+         sTourMutLE->hasAcceptableInput() &&
+         sMutProbLE->hasAcceptableInput() ) {
 
+        double mutProbability = -1.0;
+        if (bUseProbMutCB->isChecked()) {
+            if (bUseAutoProbCB->isChecked()) {
+                mutProbability = 1.0/double(cNodesLE->text().toInt());
+            } else {
+                mutProbability = sMutProbLE->text().toDouble();
+            }
+        }
         return GAInput(cNodesLE->text().toInt(),
                        cTestLE->text().toInt(),
                        cGenLE->text().toInt(),
@@ -174,7 +232,8 @@ GAInput MainWindow::getParams() {
                        sMutLE->text().toInt(),
                        sNewLE->text().toInt(),
                        sTourCrossLE->text().toInt(),
-                       sTourMutLE->text().toInt() );
+                       sTourMutLE->text().toInt(),
+                       mutProbability );
     }
     qDebug() << "WARNING: not valid input parameter, who knows which one :)";
     return GAInput();

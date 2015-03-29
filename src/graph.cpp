@@ -297,7 +297,6 @@ void Graph::probabilityMutate(double probability) {
 
             _x[i] = x;
             _y[i] = y;
-            qDebug() << "mut";
         }
     }
     _fitnes = -1;

@@ -112,10 +112,8 @@ void GA::mutation(int count, int tournamentSize, double mutProbability, std::vec
         const Graph *g = getTournamentGraph(tournamentSize, sortedPopList);
         Graph *cloned = g->clone();
         if (mutProbability < 0.000001) {
-            qDebug() << "normal mutation";
             cloned->mutate();
         } else {
-            qDebug() << "probability mutation";
             cloned->probabilityMutate( mutProbability);
         }
         newPopList.push_back( cloned);
