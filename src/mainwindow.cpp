@@ -17,6 +17,7 @@
 #include <QIntValidator>
 #include <QDoubleValidator>
 #include <QVector>
+#include "ga.h"
 
 
 
@@ -49,6 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     QObject::connect( runTestPB, SIGNAL(clicked()),
                       this, SLOT(runTest()));
+
+    runTest();
 }
 
 void MainWindow::runTest() {
@@ -57,6 +60,9 @@ void MainWindow::runTest() {
     input = getParams();
     //output = statisticTest.simpleTest(input);
     tested = true;
+
+    GA ga;
+    ga.optimize(input);
 
 //    promtL1.setText("Success rate: "+QString::number(((double)output.solutions*100)/input.testmax)+"%");
 //    promtL2.setText("Mean fitness: "+QString::number(output.meanFitness, 'f', 10));

@@ -28,7 +28,7 @@ public:
     int getFitness() const;
 
 
-    bool calcFitness();
+    int calcFitness();
     void generateNodes();
     void mutate();
     void crossover(const Graph &in2, Graph &out1, Graph &out2) const;

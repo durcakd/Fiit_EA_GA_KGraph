@@ -82,13 +82,13 @@ int Graph::getFitness() const {
 }
 
 // calc fitness --
-bool Graph::calcFitness() {
+int Graph::calcFitness() {
     if (-1 == _fitnes) {
         _fitnes = 0;
         edgeBacktrack(0);
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
 void Graph::edgeBacktrack(int start) {
@@ -127,7 +127,7 @@ void Graph::edgeBacktrack(int start, int its,
                                            _x[start], _y[start], _x[i], _y[i],sameNodes);
             _fitnes += interfer ? 1 : 0;
             if(interfer) {
-                qDebug()<< "        "<< node1<<"-"<<node2<<" "<<start<<"-"<<i<<"      "  << interfer << "    "<< sameNodes;
+                //qDebug()<< "        "<< node1<<"-"<<node2<<" "<<start<<"-"<<i<<"      "  << interfer << "    "<< sameNodes;
 
                 if (sameNodes) {
                             qDebug() << "Specia same node case : ";
