@@ -3,13 +3,13 @@
 
 #include <QDebug>
 
-const int C_NODES = 5;
+const int C_NODES = 9;
 const int C_MAX_TEST = 100;
-const int C_MAX_GEN = 2;
-const int C_MAX_POP = 20;
+const int C_MAX_GEN = 50;
+const int C_MAX_POP = 30;
 const int C_S_ELIT = 3;
-const int C_S_CROSS = 8;
-const int C_S_MUT = 6;
+const int C_S_CROSS = 12;
+const int C_S_MUT = 12;
 const int C_S_NEW = 3;
 
 const int C_S_TOURNEY_CROSS = 2;
@@ -28,7 +28,8 @@ public:
             int sMut = C_S_MUT,
             int sNew = C_S_NEW,
             int sTourCross = C_S_TOURNEY_CROSS,
-            int sTourMut = C_S_TOURNEY_MUT );
+            int sTourMut = C_S_TOURNEY_MUT,
+            double cMutProb = -1.0 );
 
     int cNodes;
     int cTest;
@@ -40,5 +41,6 @@ public:
     int sNew;
     int sTourCross;
     int sTourMut;
+    double cMutProb;
 };
 #endif

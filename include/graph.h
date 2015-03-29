@@ -29,6 +29,7 @@ public:
 
     int calcFitness();
     void generateNodes();
+    void probabilityMutate(double probability);
     void mutate();
     void crossover(const Graph &in2, Graph &out1, Graph &out2) const;
 

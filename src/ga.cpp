@@ -43,8 +43,6 @@ GAOutput GA::optimize(const GAInput &in)
     //out.resultFitness = 100000000;
     //out.fitnessCount = 0;
 
-
-
     for (int i=0; i< in.cPop; i++) {
         Graph *g = new Graph();
         g->generateNodes();
@@ -65,7 +63,7 @@ GAOutput GA::optimize(const GAInput &in)
         // CROSSOVER
         crossover(in.sCross, in.sTourCross, popList, newPopList);
         // MUTATION
-        mutation(in.sMut, in.sTourMut, popList, newPopList);
+        mutation(in.sMut, in.sTourMut, in.cMutProb, popList, newPopList);
         // NEW BLOOD
         newBlood( in.sNew, newPopList);
 
@@ -82,7 +80,7 @@ GAOutput GA::optimize(const GAInput &in)
 
         qDebug() <<"---------"<< genit <<"  BF="<<bestFitness << "   FC="<< fitnessCounter;
     }
-
+    qDebug() << "best "<<bestGraph->toString();
     return out;
 }
 
@@ -109,11 +107,17 @@ void GA::crossover(int count, int tournamentSize, std::vector<Graph*> &popList, 
     }
 }
 
-void GA::mutation(int count, int tournamentSize, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList) {
+void GA::mutation(int count, int tournamentSize, double mutProbability, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i++) {
         const Graph *g = getTournamentGraph(tournamentSize, sortedPopList);
         Graph *cloned = g->clone();
-        cloned->mutate(); // TODO which mutation?
+        if (mutProbability < 0.000001) {
+            qDebug() << "normal mutation";
+            cloned->mutate();
+        } else {
+            qDebug() << "probability mutation";
+            cloned->probabilityMutate( mutProbability);
+        }
         newPopList.push_back( cloned);
     }
 }

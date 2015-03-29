@@ -17,7 +17,7 @@ public:
 private:
     void elite(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList);
     void crossover(int count, int tournamentSize, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList);
-    void mutation(int count, int tournamentSize, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList);
+    void mutation(int count, int tournamentSize, double mutProbability, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList);
     void newBlood(int count, std::vector<Graph*> &newPopList);
 
    // const Graph *getRandomGraph(std::vector<Graph*> &popList) const;

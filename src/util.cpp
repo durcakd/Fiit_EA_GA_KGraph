@@ -62,7 +62,7 @@ void Util::resetGenerator() {
    popDist->reset();
 }
 
-double Util::nd() {
+double Util::nD() {
     return (*normalDist)(generator);
 }
 

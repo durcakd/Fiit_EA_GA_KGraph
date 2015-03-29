@@ -286,12 +286,29 @@ bool Graph::checkSameNodes(int i1, int i2, int i3, int i4) const {
 }
 
 //----------- mutate ---------------
+void Graph::probabilityMutate(double probability) {
+    for (int i=0; i<_sNodes; i++) {
+        if ( Util::get()->udD() <= probability) {
+            double x,y;
+            do {
+                x = _x[i] + Util::get()->nD();
+                y = _y[i] + Util::get()->nD();
+            } while (checkSameNodesValues(x, y, i));
+
+            _x[i] = x;
+            _y[i] = y;
+            qDebug() << "mut";
+        }
+    }
+    _fitnes = -1;
+}
+
 void Graph::mutate() {
     int rindex = Util::get()->uiD();
     double x,y;
     do {
-        x = Util::get()->udD();
-        y = Util::get()->udD();
+        x = _x[rindex] + Util::get()->nD();
+        y = _y[rindex] + Util::get()->nD();
     } while (checkSameNodesValues(x, y, rindex));
 
     _x[rindex] = x;

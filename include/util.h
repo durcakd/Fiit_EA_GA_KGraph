@@ -8,7 +8,7 @@ class Util {
 public:
     static Util* get();
 
-    double nd();
+    double nD();
     double udD();
     int uiD();
     int randomGraphIndex();
