@@ -15,6 +15,8 @@
 #include <QRadioButton>
 #include <QGroupBox>
 
+#include "renderarea.h"
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -32,6 +34,8 @@ private:
     QGroupBox *createFirstExclusiveGroup();
     GAInput getParams();
 
+
+    RenderArea rendera;
 
     QPushButton *runTestPB;
     QLabel promtL1;

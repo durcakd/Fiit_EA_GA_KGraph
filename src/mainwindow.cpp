@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     buttonLA->addWidget(&promtL3);
 
     mainLA->addLayout(buttonLA);
+    mainLA->addWidget(&rendera);
 
     QWidget *widget = new QWidget;
     widget->setLayout(mainLA);
