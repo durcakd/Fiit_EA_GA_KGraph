@@ -73,10 +73,10 @@ GAOutput GA::optimize(const GAInput &in)
         elite(in.sElit, popList, newPopList);
 
         // CROSSOVER
-        crossover(in.sCross, popList, newPopList);
+        crossover(in.sCross, in.sTourCross, popList, newPopList);
 
         // MUTATION
-        mutation(in.sMut, popList, newPopList);
+        mutation(in.sMut, in.sTourMut, popList, newPopList);
 
         // NEW BLOOD
         newBlood( in.sNew, newPopList);
@@ -96,10 +96,10 @@ void GA::elite(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*
     }
 }
 
-void GA::crossover(int count, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList) {
+void GA::crossover(int count, int tournamentSize, std::vector<Graph*> &popList, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i+=2) {
-        const Graph *g1 = getRandomGraph( popList);
-        const Graph *g2 = getRandomGraph( popList);
+        const Graph *g1 = getTournamentGraph(tournamentSize, popList);
+        const Graph *g2 = getTournamentGraph(tournamentSize, popList);
 
         Graph *ng1 = new Graph();
         Graph *ng2 = new Graph();
@@ -111,19 +111,34 @@ void GA::crossover(int count, std::vector<Graph*> &popList, std::vector<Graph*> 
     }
 }
 
-void GA::mutation(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList) {
+void GA::mutation(int count, int tournamentSize, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i++) {
-        const Graph *g = getRandomGraph( sortedPopList);
+        const Graph *g = getTournamentGraph(tournamentSize, sortedPopList);
         Graph *cloned = g->clone();
         cloned->mutate(); // TODO which mutation?
         newPopList.push_back( cloned);
     }
 }
 
-const Graph *GA::getRandomGraph(std::vector<Graph*> &popList) const {
-    int i = Util::get()->randomGraphIndex();
-    return popList.at(i);
+const Graph *GA::getTournamentGraph(int tournamentSize, std::vector<Graph*> &popList) const {
+    int randi = Util::get()->randomGraphIndex();
+    const Graph *winner = popList.at(randi);
+
+    for (int i=1; i<tournamentSize; i++) {
+        randi = Util::get()->randomGraphIndex();
+        Graph *challenger = popList.at(randi);
+        if (winner->getFitness() > challenger->getFitness()) {
+            winner = challenger;
+        }
+    }
+
+    return winner;
 }
+
+//const Graph *GA::getRandomGraph(std::vector<Graph*> &popList) const {
+//    int i = Util::get()->randomGraphIndex();
+//    return popList.at(i);;
+//}
 
 void GA::newBlood(int count, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i++) {

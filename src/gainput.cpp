@@ -7,7 +7,9 @@ GAInput::GAInput(int cNodes,
                  int sElit,
                  int sCross,
                  int sMut,
-                 int sNew ) {
+                 int sNew,
+                 int sTourCross,
+                 int sTourMut ) {
 
     this->cNodes = cNodes;
     this->cTest = cTest;
@@ -17,4 +19,6 @@ GAInput::GAInput(int cNodes,
     this->sCross = sCross;
     this->sMut = sMut;
     this->sNew = sNew;
+    this->sTourCross = sTourCross;
+    this->sTourMut = sTourMut;
 }

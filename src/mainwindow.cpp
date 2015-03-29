@@ -97,6 +97,8 @@ QGridLayout *MainWindow::createParamLayout() {
     QLabel *sCrossL = new QLabel(tr("Cross ratio"));
     QLabel *sMutL = new QLabel(tr("Mut ratio"));
     QLabel *sNewL = new QLabel(tr("New ratio"));
+    QLabel *sTourCrossL = new QLabel(tr("Cross tourney size"));
+    QLabel *sTourMutL = new QLabel(tr("Mut tourney size"));
 
     cNodesLE    = new QLineEdit(QString::number( C_NODES ));
     cTestLE     = new QLineEdit(QString::number( C_MAX_TEST ));
@@ -106,6 +108,8 @@ QGridLayout *MainWindow::createParamLayout() {
     sCrossLE    = new QLineEdit(QString::number( C_S_CROSS ));
     sMutLE      = new QLineEdit(QString::number( C_S_MUT ));
     sNewLE      = new QLineEdit(QString::number( C_S_NEW ));
+    sTourCrossLE    = new QLineEdit(QString::number( C_S_TOURNEY_CROSS ));
+    sTourMutLE      = new QLineEdit(QString::number( C_S_TOURNEY_MUT ));
 
     QGridLayout *paramLayout = new QGridLayout();
 
@@ -117,6 +121,9 @@ QGridLayout *MainWindow::createParamLayout() {
     paramLayout->addWidget( sCrossL,    5,0 );
     paramLayout->addWidget( sMutL,        6,0 );
     paramLayout->addWidget( sNewL,        7,0 );
+    paramLayout->addWidget( sTourCrossL,8,0 );
+    paramLayout->addWidget( sTourMutL,  9,0 );
+
 
     paramLayout->addWidget( cNodesLE,   0,1 );
     paramLayout->addWidget( cTestLE,      1,1 );
@@ -126,6 +133,8 @@ QGridLayout *MainWindow::createParamLayout() {
     paramLayout->addWidget( sCrossLE,     5,1 );
     paramLayout->addWidget( sMutLE,         6,1 );
     paramLayout->addWidget( sNewLE,         7,1 );
+    paramLayout->addWidget( sTourCrossLE,8,1 );
+    paramLayout->addWidget( sTourMutLE,  9,1 );
 
     QIntValidator *ssValidator     = new QIntValidator(1, 50, this);
     QIntValidator *pValidator     = new QIntValidator(1, 100, this);
@@ -138,6 +147,8 @@ QGridLayout *MainWindow::createParamLayout() {
     sCrossLE->setValidator( pValidator);
     sMutLE->setValidator( pValidator);
     sNewLE->setValidator( pValidator);
+    sTourCrossLE->setValidator( ssValidator);
+    sTourMutLE->setValidator( ssValidator);
 
     return paramLayout;
 }
@@ -150,7 +161,9 @@ GAInput MainWindow::getParams() {
          sElitLE->hasAcceptableInput() &&
          sCrossLE->hasAcceptableInput() &&
          sMutLE->hasAcceptableInput() &&
-         sNewLE->hasAcceptableInput()) {
+         sNewLE->hasAcceptableInput() &&
+         sTourCrossLE->hasAcceptableInput() &&
+         sTourMutLE->hasAcceptableInput()) {
 
         return GAInput(cNodesLE->text().toInt(),
                        cTestLE->text().toInt(),
@@ -159,7 +172,9 @@ GAInput MainWindow::getParams() {
                        sElitLE->text().toInt(),
                        sCrossLE->text().toInt(),
                        sMutLE->text().toInt(),
-                       sNewLE->text().toInt());
+                       sNewLE->text().toInt(),
+                       sTourCrossLE->text().toInt(),
+                       sTourMutLE->text().toInt() );
     }
     qDebug() << "WARNING: not valid input parameter, who knows which one :)";
     return GAInput();

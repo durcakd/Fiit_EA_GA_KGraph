@@ -11,6 +11,9 @@ const int C_S_ELIT = 3;
 const int C_S_CROSS = 8;
 const int C_S_MUT = 6;
 const int C_S_NEW = 3;
+
+const int C_S_TOURNEY_CROSS = 2;
+const int C_S_TOURNEY_MUT = 2;
 const double C_SIGMA = 0.1;
 
 class GAInput
@@ -23,7 +26,9 @@ public:
             int sElit = C_S_ELIT,
             int sCross = C_S_CROSS,
             int sMut = C_S_MUT,
-            int sNew = C_S_NEW );
+            int sNew = C_S_NEW,
+            int sTourCross = C_S_TOURNEY_CROSS,
+            int sTourMut = C_S_TOURNEY_MUT );
 
     int cNodes;
     int cTest;
@@ -33,5 +38,7 @@ public:
     int sCross;
     int sMut;
     int sNew;
+    int sTourCross;
+    int sTourMut;
 };
 #endif

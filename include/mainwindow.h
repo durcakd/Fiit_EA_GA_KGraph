@@ -47,6 +47,8 @@ private:
     QLineEdit *sCrossLE;
     QLineEdit *sMutLE;
     QLineEdit *sNewLE;
+    QLineEdit *sTourCrossLE;
+    QLineEdit *sTourMutLE;
 
     QRadioButton *ga1RB;
     QRadioButton *ga2RB;
@@ -60,6 +62,8 @@ sElit
 sCross
 sMut
 sNew
+sTourCross
+sTourMut
 */
 };
 
