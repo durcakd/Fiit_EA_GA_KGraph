@@ -1,0 +1,101 @@
+Evolučné algoritmy
+
+Rozmiestnenie vrcholov kompletného grafu
+Genetický algoritmus
+
+Dávid Durčák
+31.03.2015
+---------------------------------------------
+Zadanie
+
+Nájdite rozmiestnenie vrcholov kompletného grafu v rovine s čo najmenším počtom prekrížení hrán
+Použite genetický algoritmus s výberom s turnajom s gaussovskou mutáciou (sigma=0.1) a s jednobodovým krížením
+Vypočítajte priemer a smerodajnú odchýlku na počet pokusov k dosiahnutiu cieľa pre každý z grafov pre N=<4;10>
+
+---------------------------------------------
+Reprezentácia
+pole N vrcholov
+každý bod má 2 súradnice - reálne čísla
+Suradnice nového jedinca generované z intervalu <0,0;1,0>
+
+---------------------------------------------
+Fitness fukcia 
+# vrcholov: N
+# hran: E = (N*(N-1))/2      všetky dvojice vrcholov
+# možných prekrížení: (E*(E-1))/2  všetky dvojice hrán
+
+Testovanie všetkých dvojíc hrán či sa križujú.
+ 
+2 rôzne implementácie:
+  1. pomocou smernicovej rovnice priamky (ako v zadaní)
+  2. pomocou všeobecnej rovnice priamky
+
+---------------------------------------------
+Mutácia
+Výber mutovaného jedinca turnajom
+Mutuje sa 1 náhodne zvolený bod
+Mutuje sa každý bod s pravdepodobnosťou P  (napr. Pmut=1/N) 
+
+Mutovať môžeme jednu alebo obe súradnice vrcholu
+
+Pripočítanie náhodného čísla s Gaussovskou (normálnou) distribúciou k suradnici.
+
+Vhodná veľkosť mutácie (sigma)?
+---------------------------------------------
+Kríženie
+Výber jedincov turnajom
+Jednobodové kríženie - vzájomná výmena vrcholov
+
+---------------------------------------------
+Genetický algoritmus
+
+Tvorba novej populácie:
+Elitou
+Krížením
+Mutáciou
+Generovaním nových jedincov
+
+
+
+
+
+
+
+
+---------------------------------------------
+
+
+
+
+---------------------------------------------
+
+
+
+
+---------------------------------------------
+
+
+
+
+---------------------------------------------
+
+
+
+
+---------------------------------------------
+
+
+
+
+---------------------------------------------
+
+
+
+
+---------------------------------------------
+
+
+
+
+---------------------------------------------
+
