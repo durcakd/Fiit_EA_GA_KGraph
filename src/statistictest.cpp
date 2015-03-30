@@ -16,6 +16,7 @@ GAOutput StatisticTest::simpleTest(GAInput in)
     GAOutput outTest;
     outTest.tMeanFitness = 0.0;
     outTest.tMeanFitnessCall = 0.0;
+    outTest.tMeanGenCall = 0.0;
     outTest.tSolutions = 0;
     outTest.resGraph = NULL;
     Graph *bestGraph = NULL;
@@ -42,6 +43,7 @@ GAOutput StatisticTest::simpleTest(GAInput in)
 //        outTest.testFitnessCalls.append(out.oFitnessCall);
         outTest.tMeanFitness += out.oResultFitness;
         outTest.tMeanFitnessCall += out.oFitnessCall;
+        outTest.tMeanGenCall += out.oGenCall;
         outTest.tSolutions += out.oIsSolution ? 1 : 0;
 
         if (NULL == bestGraph
@@ -53,6 +55,7 @@ GAOutput StatisticTest::simpleTest(GAInput in)
     }
     qDebug() << "TEST ends";
     outTest.tMeanFitnessCall /= in.cTest;
+    outTest.tMeanGenCall /= in.cTest;
     outTest.tMeanFitness = 0==outTest.tSolutions ? -1: outTest.tMeanFitness = outTest.tSolutions;
     outTest.resGraph = bestGraph;
     return outTest;

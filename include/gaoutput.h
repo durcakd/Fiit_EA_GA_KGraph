@@ -19,6 +19,7 @@ public:
     // all tests
     double  tMeanFitness;
     double  tMeanFitnessCall;
+    double  tMeanGenCall;
     int     tSolutions;
     Graph   *resGraph;
 

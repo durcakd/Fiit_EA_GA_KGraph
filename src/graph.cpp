@@ -403,7 +403,7 @@ bool Graph::hasSolution(int nodesCount) {
 
 bool Graph::isSolution() const {
     if (hasSolution(_sNodes)) {
-        return getFitness() > solutions[_sNodes];
+        return getFitness() <= solutions[_sNodes];
     }
     return false;
 }

@@ -55,7 +55,7 @@ GAOutput GA::optimize(const GAInput &in)
     qDebug() << "best "<<bestGraph->toString();
 
     int genit=1;
-    for ( ; genit<in.cGen; genit++) {
+    while ( genit<in.cGen && !bestGraph->isSolution()) {
         std::sort (popList.begin(), popList.end(), GraphComparator);
         //printPop(popList);
 
@@ -80,9 +80,11 @@ GAOutput GA::optimize(const GAInput &in)
         recalcFitness( popList, fitnessCounter, bestFitness, &bestGraph);
 
         qDebug() <<"---------"<< genit <<"  BF="<<bestFitness << "   FC="<< fitnessCounter;
+
+        genit++;
     }
     qDebug() << "best "<<bestGraph->toString();
-    out.oIsSolution = false;  // TODO
+    out.oIsSolution = bestGraph->isSolution();
     out.oResultFitness = bestGraph->getFitness();
     out.oGenCall = genit;
     out.oFitnessCall = fitnessCounter;
