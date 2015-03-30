@@ -59,7 +59,8 @@ private:
 
     bool checkSameNodesValues(double x, double y, int index) const;
 
-    void setEdge(int n1, int n2, bool isIntercept);
+    void addEdgeToMap(int n1, int n2, bool isIntercept);
+    void calculateEdges();
 
     static int _sNodes;
 

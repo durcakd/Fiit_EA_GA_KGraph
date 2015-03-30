@@ -92,6 +92,13 @@ int Graph::calcFitness() {
     return 0;
 }
 
+void Graph::calculateEdges() {
+    createEdges = true;
+    edgeBacktrack(0);
+    createEdges = false;
+}
+
+
 void Graph::edgeBacktrack(int start) {
     if (start+1 < _sNodes) {
         for (int i=start+1 ; i<_sNodes; i++) {
@@ -136,6 +143,11 @@ void Graph::edgeBacktrack(int start, int its,
                              <<"     "<<int(100*_x[start])<<" "<<int(100*_y[start])<<" "<<int(100*_x[i])<<" "<<int(100*_y[i]);
                 }
             }
+            if (createEdges) {
+                addEdgeToMap(node1, node2, interfer);
+                addEdgeToMap(start, i, interfer);
+            }
+
         }
         edgeBacktrack(start+1, start+2, x1, y1, x2, y2,
                       node1, node2);
@@ -359,12 +371,13 @@ std::map<std::string, bool> *Graph::getEdges() {
     return edges;
 }
 
-void Graph::setEdge(int n1, int n2, bool isIntercept) {
+void Graph::addEdgeToMap(int n1, int n2, bool isIntercept) {
     std::map<std::string, bool> *edgeMap = getEdges();
     std::string key = std::to_string(n1)+";"+std::to_string(n2);
 
     if (edgeMap->find(key) == edgeMap->end()
             || isIntercept) {
+        qDebug() <<"  "<<QString::fromStdString(key)<<(isIntercept ? " update ":" add");
         (*edgeMap)[key] = isIntercept;
     }
 }
