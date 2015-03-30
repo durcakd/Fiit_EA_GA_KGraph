@@ -23,7 +23,6 @@ struct comparator {
 
 GAOutput GA::optimize(const GAInput &in)
 {
-    qDebug() <<"====================================";
     GAOutput out;
     out.oIsSolution = false;
     out.oResultFitness = 100000000;
@@ -59,7 +58,6 @@ GAOutput GA::optimize(const GAInput &in)
     int genit=1;
     while ( genit<in.cGen && !bestGraph->isSolution()) {
         std::sort (popList.begin(), popList.end(), GraphComparator);
-        //printPop(popList);
 
         // ELITE
         elite(in.sElit, popList, newPopList);
@@ -87,7 +85,6 @@ GAOutput GA::optimize(const GAInput &in)
 
         genit++;
     }
-    qDebug() << "best "<<bestGraph->toString();
     out.oIsSolution = bestGraph->isSolution();
     out.oResultFitness = bestGraph->getFitness();
     out.oGenCall = genit;
@@ -136,22 +133,15 @@ const Graph *GA::getTournamentGraph(int tournamentSize, std::vector<Graph*> &pop
 
     int randi = Util::get()->randomGraphIndex();
     const Graph *winner = popList.at(randi);
-    //qDebug() << "Tournament "<< tournamentSize << "   F="<<winner->getFitness();
     for (int i=1; i<tournamentSize; i++) {
         randi = Util::get()->randomGraphIndex();
         Graph *challenger = popList.at(randi);
         if (winner->getFitness() > challenger->getFitness()) {
             winner = challenger;
-            //qDebug() << "  winner changed    F= "<<winner->getFitness();
         }
     }
     return winner;
 }
-
-//const Graph *GA::getRandomGraph(std::vector<Graph*> &popList) const {
-//    int i = Util::get()->randomGraphIndex();
-//    return popList.at(i);;
-//}
 
 void GA::newBlood(int count, std::vector<Graph*> &newPopList) {
     for (int i=0; i<count; i++) {
@@ -213,10 +203,12 @@ QString GA::getStatistic(int genit, int fitnessCalls, Graph *bestGrap, std::vect
     soFitness /= popSize;
     soFitness = sqrt(soFitness);
 
-    QString s = "  "% QString::number(genit+1)\
+    QString s = ";  "% QString::number(genit+1)\
             %" ;BF=;"% QString::number( bestGrap->getFitness())\
             %" ;MF=;"% QString::number( meanFitness,'f',2 )\
-            %" ;SO=;"% QString::number( soFitness,'f',2 )\
-            %" ;FC=;"% QString::number( fitnessCalls );
+            %" ;SOF=;"% QString::number( soFitness,'f',2 )\
+            /*%" ;FC=;"% QString::number( fitnessCalls )*/\
+            %";";
+
     return s;
 }

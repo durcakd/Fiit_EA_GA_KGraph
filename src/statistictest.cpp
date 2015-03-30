@@ -1,8 +1,10 @@
+#include "statistictest.h"
 
 #include <QDebug>
-#include "statistictest.h"
+#include <QStringBuilder>
 #include "ga.h"
 #include "graph.h"
+
 
 StatisticTest::StatisticTest()
 {
@@ -12,40 +14,17 @@ StatisticTest::StatisticTest()
 
 GAOutput StatisticTest::simpleTest(GAInput in)
 {
-    qDebug() << "TEST ===========================================";
     GAOutput outTest;
-    outTest.tMeanFitness = 0.0;
-    outTest.tMeanFitnessCall = 0.0;
-    outTest.tMeanGenCall = 0.0;
-    outTest.tSolutions = 0;
-    outTest.resGraph = NULL;
     Graph *bestGraph = NULL;
 
-    //in.fill1RunChart = true;
+    std::vector<GAOutput> results;
+
     for (int i=0; i<in.cTest; i++) {
 
         GA ga;
         ga.enableStatistics( 1==in.cTest);
         GAOutput out = ga.optimize(in);
-
-//        if (0 == i) {
-//            outTest.vAlphaF = out.vAlphaF;
-//            outTest.vfinalAlphaF = out.vfinalAlphaF;
-//        }
-
-        //in.fill1RunChart = false;
-        qDebug() << i+1 << ";\t" << (out.oIsSolution?"1":"0") \
-                 << ";\t" << out.oResultFitness \
-                 << ";\t" << out.oGenCall \
-                 << ";\t" << out.oFitnessCall;
-
-
-//        outTest.testFitness.append(out.oResultFitness);
-//        outTest.testFitnessCalls.append(out.oFitnessCall);
-        outTest.tMeanFitness += out.oResultFitness;
-        outTest.tMeanFitnessCall += out.oFitnessCall;
-        outTest.tMeanGenCall += out.oGenCall;
-        outTest.tSolutions += out.oIsSolution ? 1 : 0;
+        results.push_back(out);
 
         if (NULL == bestGraph
                 || out.resGraph->getFitness() < bestGraph->getFitness()) {
@@ -54,10 +33,69 @@ GAOutput StatisticTest::simpleTest(GAInput in)
         }
 
     }
-    qDebug() << "TEST ends";
-    outTest.tMeanFitnessCall /= in.cTest;
-    outTest.tMeanGenCall /= in.cTest;
-    outTest.tMeanFitness = 0==outTest.tSolutions ? -1: outTest.tMeanFitness = outTest.tSolutions;
+
     outTest.resGraph = bestGraph;
+    calcStatistic(results, outTest);
+    qDebug() << StatisticToString(outTest);
     return outTest;
+}
+
+
+void StatisticTest::calcStatistic(std::vector<GAOutput> &results, GAOutput &outTest) const {
+    double meanFitness      = 0.0;
+    double soFitness        = 0.0;
+    double meanGenCalls     = 0.0;
+    double soGenCalls       = 0.0;
+    double meanFitnessCalls = 0.0;
+    double soFitnessCalls   = 0.0;
+    int solutionCount       = 0;
+    int resSize = results.size();
+
+    // solution counts, MEAN fitness, gen calls, fitness calls
+    std::vector<GAOutput>::const_iterator it = results.cbegin();
+    for (; it!=results.cend(); it++) {
+        meanFitness      += it->oResultFitness;
+        meanGenCalls     += it->oGenCall;
+        meanFitnessCalls += it->oFitnessCall;
+        solutionCount    += it->oIsSolution ? 1 : 0;
+    }
+    meanFitness      /= resSize;
+    meanGenCalls     /= resSize;
+    meanFitnessCalls /= resSize;
+
+    // SO fitness, gen calls, fitness calls
+    it = results.cbegin();
+    for (; it!=results.cend(); it++) {
+        double dFitness      = meanFitness - it->oResultFitness;
+        double dGenCalls     = meanGenCalls - it->oGenCall;
+        double dFitnessCalls = meanFitnessCalls - it->oFitnessCall;
+        soFitness      = dFitness*dFitness;
+        soGenCalls     = dGenCalls*dGenCalls;
+        soFitnessCalls = dFitnessCalls*dFitnessCalls;
+    }
+    soFitness = sqrt(soFitness/resSize);
+    soGenCalls = sqrt(soGenCalls/resSize);
+    soFitnessCalls = sqrt(soFitnessCalls/resSize);
+
+    outTest.tSolutions       = solutionCount;
+    outTest.tMeanFitness     = meanFitness;
+    outTest.tMeanGenCall     = meanGenCalls;
+    outTest.tMeanFitnessCall = meanFitnessCalls;
+    outTest.tSoFitness       = soFitness;
+    outTest.tSoGenCall       = soGenCalls;
+    outTest.tSoFitnessCall   = soFitnessCalls;
+
+}
+
+QString StatisticTest::StatisticToString( GAOutput &outTest) const {
+    QString s = ";sols=;"% QString::number( outTest.tSolutions )\
+            %" ;MF=;"% QString::number( outTest.tMeanFitness,'f',2 )\
+            %" ;SOF=;"% QString::number( outTest.tSoFitness,'f',2 )\
+            %" ;MG=;"% QString::number( outTest.tMeanGenCall,'f',2 )\
+            %" ;SOG=;"% QString::number( outTest.tSoGenCall,'f',2 )\
+            %" ;MFC=;"% QString::number( outTest.tMeanFitnessCall,'f',2 )\
+            %" ;SOFC=;"% QString::number( outTest.tSoFitnessCall,'f',2 )\
+            %";";
+
+    return s;
 }

@@ -21,7 +21,6 @@ QSize GraphArea::sizeHint() const {
 
 void GraphArea::setGraphEdges(Graph *g) {
     if (NULL != g) {
-        qDebug() << "RENDER AREA: nmew graph: " << g->toString();
         double maxx, maxy;
         g->getExtremNodesCords(minx, miny, maxx, maxy);
         maxd = maxx-minx > maxy-miny ? maxx-minx : maxy-miny;

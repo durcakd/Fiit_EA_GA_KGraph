@@ -13,6 +13,9 @@ public:
 
     GAOutput simpleTest(GAInput in);
 
+private:
+    void calcStatistic(std::vector<GAOutput> &results, GAOutput &outTest) const;
+    QString StatisticToString( GAOutput &outTest) const;
 };
 
 #endif

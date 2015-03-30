@@ -21,7 +21,6 @@ private:
     void mutation(int count, int tournamentSize, double mutProbability, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList);
     void newBlood(int count, std::vector<Graph*> &newPopList);
 
-   // const Graph *getRandomGraph(std::vector<Graph*> &popList) const;
     void recalcFitness(std::vector<Graph*> &popList, int &fitnessCounter, int &bestFitness, Graph **bestGraph );
     const Graph *getTournamentGraph(int tournamentSize, std::vector<Graph*> &popList) const;
     void completeClearPop(std::vector<Graph*> &popList);

@@ -15,19 +15,15 @@ public:
     int     oGenCall;
     int     oFitnessCall;
 
-
     // all tests
+    Graph   *resGraph;
+    int     tSolutions;
     double  tMeanFitness;
     double  tMeanFitnessCall;
     double  tMeanGenCall;
-    int     tSolutions;
-    Graph   *resGraph;
-
-//    QVector<double> vfinalAlphaF;
-//    QVector<double> vAlphaF;
-//    QVector<double> testFitness;
-//    QVector<double> testFitnessCalls;
-
+    double  tSoFitness;
+    double  tSoFitnessCall;
+    double  tSoGenCall;
 };
 
 #endif
