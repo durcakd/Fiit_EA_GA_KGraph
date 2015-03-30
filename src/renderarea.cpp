@@ -7,7 +7,7 @@ RenderArea::RenderArea(QWidget *parent)
 {
     antialiased = true;
     setBackgroundRole(QPalette::Base);
-    //setAutoFillBackground(true);
+    setAutoFillBackground(true);
     edgeList = NULL;
 }
 
@@ -16,7 +16,7 @@ QSize RenderArea::minimumSizeHint() const {
 }
 
 QSize RenderArea::sizeHint() const {
-    return QSize(600, 600);
+    return QSize(1000, 600);
 }
 
 void RenderArea::setPen(const QPen &pen) {
@@ -30,14 +30,18 @@ void RenderArea::setBrush(const QBrush &brush) {
 }
 
 void RenderArea::setGraphEdges(Graph *g) {
-    double maxx, maxy;
-    g->getExtremNodesCords(minx, miny, maxx, maxy);
-    maxd = maxx-minx > maxy-miny ? maxx-minx : maxy-miny;
+    if (NULL != g) {
+        qDebug() << "RENDER AREA: nmew graph: " << g->toString();
+        double maxx, maxy;
+        g->getExtremNodesCords(minx, miny, maxx, maxy);
+        maxd = maxx-minx > maxy-miny ? maxx-minx : maxy-miny;
 
-    delete edgeList;
-    edgeList = new std::vector<Edge*>();
+        delete edgeList;
+        edgeList = new std::vector<Edge*>();
 
-    g->calculateEdges( *edgeList);
+        g->calculateEdges( *edgeList);
+    }
+    update();
 }
 
 
@@ -51,33 +55,33 @@ void RenderArea::paintEvent(QPaintEvent * /* event */) {
         painter.setRenderHint(QPainter::Antialiasing, true);
 
 
-    for (int x = 0; x < width(); x += 100) {
-        for (int y = 0; y < height(); y += 100) {
-            painter.save();
-            painter.translate(x, y);
 
-            if (NULL != edgeList) {
-                int minwind = width() < height() ? width():height();
-                double coef = ((double)minwind)/maxd;
+    int minwind = width() < height() ? width():height();
+    double coef = ((double)minwind-20)/maxd;
 
-                std::vector<Edge*>::const_iterator it=edgeList->cbegin();
-                for ( ; it!= edgeList->cend(); it++) {
-                    const Edge &e = **it;
-                    int x1 = ((e.x1)-minx) * coef;
-                    int y1 = ((e.y1)-miny) * coef;
-                    int x2 = ((e.x2)-minx) * coef;
-                    int y2 = ((e.y2)-miny) * coef;
-                    painter.drawLine(x1,y1,x2,y2);
+    painter.save();
+    painter.translate((width()-minwind)/2+10, (height()-minwind)/2+10);
 
-                    // Points:
-                    painter.drawPoint(x1,y1);
-                    painter.drawPoint(x2,y2);
-                }
-            }
+    if (NULL != edgeList) {
 
-            painter.restore();
+
+        std::vector<Edge*>::const_iterator it=edgeList->cbegin();
+        for ( ; it!= edgeList->cend(); it++) {
+            const Edge &e = **it;
+            int x1 = (((e.x1)-minx) * coef);
+            int y1 = (((e.y1)-miny) * coef);
+            int x2 = (((e.x2)-minx) * coef);
+            int y2 = (((e.y2)-miny) * coef);
+            painter.drawLine(x1,y1,x2,y2);
+
+            // Points:
+            painter.drawPoint(x1,y1);
+            painter.drawPoint(x2,y2);
         }
     }
+
+    painter.restore();
+
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setPen(palette().dark().color());

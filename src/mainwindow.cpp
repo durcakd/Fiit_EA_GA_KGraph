@@ -66,14 +66,16 @@ void MainWindow::runTest() {
     StatisticTest statisticTest;
     input = getParams();
     output = statisticTest.simpleTest(input);
-    tested = true;
 
+    rendera.setGraphEdges( output.resGraph);
 //    GA ga;
 //    ga.optimize(input);
+
 
     promtL1.setText("Success rate: "+QString::number(((double)output.tSolutions*100)/input.cTest)+"%");
     promtL2.setText("Mean fitness: "+QString::number(output.tMeanFitness, 'f', 10));
     promtL3.setText("Mean fitness call: "+QString::number(output.tMeanFitnessCall, 'f', 0));
+    tested = true;
 }
 
 
