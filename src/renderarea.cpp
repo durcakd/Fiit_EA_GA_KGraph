@@ -7,7 +7,7 @@ RenderArea::RenderArea(QWidget *parent)
 {
     antialiased = true;
     setBackgroundRole(QPalette::Base);
-    setAutoFillBackground(true);
+    //setAutoFillBackground(true);
     edgeList = NULL;
 }
 
@@ -43,14 +43,6 @@ void RenderArea::setGraphEdges(Graph *g) {
 
 
 void RenderArea::paintEvent(QPaintEvent * /* event */) {
-    static const QPoint points[4] = {
-        QPoint(10, 80),
-        QPoint(20, 10),
-        QPoint(80, 30),
-        QPoint(90, 70)
-    };
-
-    QRect rect(10, 20, 80, 60);
 
     QPainter painter(this);
     painter.setPen(pen);

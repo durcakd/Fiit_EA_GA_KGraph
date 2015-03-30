@@ -63,17 +63,17 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::runTest() {
     qDebug() << "Run test...";
-    //StatisticTest statisticTest;
+    StatisticTest statisticTest;
     input = getParams();
-    //output = statisticTest.simpleTest(input);
+    output = statisticTest.simpleTest(input);
     tested = true;
 
-    GA ga;
-    ga.optimize(input);
+//    GA ga;
+//    ga.optimize(input);
 
-    //    promtL1.setText("Success rate: "+QString::number(((double)output.solutions*100)/input.testmax)+"%");
-    //    promtL2.setText("Mean fitness: "+QString::number(output.meanFitness, 'f', 10));
-    //    promtL3.setText("Mean fitness call: "+QString::number(output.meanFitnessCall, 'f', 0));
+    promtL1.setText("Success rate: "+QString::number(((double)output.tSolutions*100)/input.cTest)+"%");
+    promtL2.setText("Mean fitness: "+QString::number(output.tMeanFitness, 'f', 10));
+    promtL3.setText("Mean fitness call: "+QString::number(output.tMeanFitnessCall, 'f', 0));
 }
 
 
