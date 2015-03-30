@@ -7,12 +7,16 @@
 class Edge
 {
 public:
-    Edge(QPoint node1,
-         QPoint node2,
+    Edge(double x1,
+         double y1,
+         double x2,
+         double y2,
          bool isIntercepted);
 
-    QPoint node1;
-    QPoint node2;
+    double x1;
+    double y1;
+    double x2;
+    double y2;
     bool isIntercepted;
 
 };

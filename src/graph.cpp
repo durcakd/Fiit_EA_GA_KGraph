@@ -363,21 +363,27 @@ void Graph::getExtremNodesCords(double &minx, double &miny, double &maxx, double
     }
 }
 
-std::map<std::string, bool> *Graph::getEdges() {
+std::map<std::string, Edge*> *Graph::getEdges() {
     if (NULL == edges) {
-        edges = new std::map<std::string, bool>();
+        edges = new std::map<std::string, Edge*>();
     }
-
     return edges;
 }
 
 void Graph::addEdgeToMap(int n1, int n2, bool isIntercept) {
-    std::map<std::string, bool> *edgeMap = getEdges();
     std::string key = std::to_string(n1)+";"+std::to_string(n2);
 
-    if (edgeMap->find(key) == edgeMap->end()
-            || isIntercept) {
-        qDebug() <<"  "<<QString::fromStdString(key)<<(isIntercept ? " update ":" add");
-        (*edgeMap)[key] = isIntercept;
+    std::map<std::string, Edge*> *edgeMap = getEdges();
+    std::map<std::string, Edge*>::iterator it = edgeMap->find(key);
+
+    if (it == edgeMap->end()) {
+        // new one created
+        qDebug() <<"  "<<QString::fromStdString(key)<<" add";
+        Edge *e = new Edge(_x[n1],_y[n1],_x[n2],_y[n2], isIntercept);
+        (*edgeMap)[key] = e;
+    } else if (isIntercept) {
+        qDebug() <<"  "<<QString::fromStdString(key)<<" update";
+
+        it->second->isIntercepted = isIntercept;
     }
 }

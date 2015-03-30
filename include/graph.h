@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <map>
 #include <string>
+#include <edge.h>
 
 
 class Graph {
@@ -37,7 +38,7 @@ public:
     QString toString() const;
     void getExtremNodesCords(double &minx, double &miny, double &maxx, double &maxy) const;
 
-    std::map<std::string, bool> *getEdges();
+    std::map<std::string, Edge*> *getEdges();
 
 
 private:
@@ -69,7 +70,7 @@ private:
     int _fitnes;
 
     bool createEdges;
-    std::map<std::string, bool> *edges;
+    std::map<std::string, Edge*> *edges;
 
 
 };

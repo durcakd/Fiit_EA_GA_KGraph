@@ -1,10 +1,14 @@
 #include "edge.h"
 
-Edge::Edge(QPoint node1,
-           QPoint node2,
+Edge::Edge(double x1,
+           double y1,
+           double x2,
+           double y2,
            bool isIntercepted) {
 
-    this->node1 = node1;
-    this->node2 = node2;
+    this->x1 = x1;
+    this->y1 = y1;
+    this->x2 = x2;
+    this->y2 = y2;
     this->isIntercepted = isIntercepted;
 }
