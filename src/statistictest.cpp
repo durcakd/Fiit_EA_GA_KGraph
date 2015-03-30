@@ -1,7 +1,7 @@
 #include "statistictest.h"
 
 #include <QDebug>
-#include <QStringBuilder>
+
 #include "ga.h"
 #include "graph.h"
 
@@ -36,7 +36,7 @@ GAOutput StatisticTest::simpleTest(GAInput in)
 
     outTest.resGraph = bestGraph;
     calcStatistic(results, outTest);
-    qDebug() << StatisticToString(outTest);
+    qDebug() << in.toString() <<outTest.testOutToString();
     return outTest;
 }
 
@@ -87,15 +87,4 @@ void StatisticTest::calcStatistic(std::vector<GAOutput> &results, GAOutput &outT
     outTest.tSoFitnessCall   = soFitnessCalls;
 }
 
-QString StatisticTest::StatisticToString( GAOutput &outTest) const {
-    QString s = ";success=;"% QString::number( outTest.tSuccess,'f',2 )\
-            %" ;MF=;"% QString::number( outTest.tMeanFitness,'f',2 )\
-            %" ;SOF=;"% QString::number( outTest.tSoFitness,'f',2 )\
-            %" ;MG=;"% QString::number( outTest.tMeanGenCall,'f',2 )\
-            %" ;SOG=;"% QString::number( outTest.tSoGenCall,'f',2 )\
-            %" ;MFC=;"% QString::number( outTest.tMeanFitnessCall,'f',2 )\
-            %" ;SOFC=;"% QString::number( outTest.tSoFitnessCall,'f',2 )\
-            %";";
 
-    return s;
-}

@@ -1,4 +1,5 @@
 #include "gainput.h"
+#include <QStringBuilder>
 
 GAInput::GAInput(int cNodes,
                  int cTest,
@@ -23,4 +24,17 @@ GAInput::GAInput(int cNodes,
     this->sTourCross = sTourCross;
     this->sTourMut = sTourMut;
     this->cMutProb = cMutProb;
+}
+
+QString GAInput::toString() const {
+    QString s = ";nodes=;"% QString::number( cNodes )\
+            %" ;cPop=;"% QString::number( cPop )\
+            %" ;sElit=;"% QString::number( sElit )\
+            %" ;sCross=;"% QString::number( sCross )\
+            %" ;sMut=;"% QString::number( sMut )\
+            %" ;sNew=;"% QString::number( sNew )\
+            %" ;sTourCross=;"% QString::number( sTourCross )\
+            %" ;sTourMut=;"% QString::number( sTourMut )\
+            %";";
+    return s;
 }

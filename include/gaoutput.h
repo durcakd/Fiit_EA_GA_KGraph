@@ -10,6 +10,8 @@ class GAOutput
 public:
     GAOutput();
 
+    QString testOutToString() const;
+
     bool    oIsSolution;
     int     oResultFitness;
     int     oGenCall;
@@ -26,6 +28,7 @@ public:
     double  tSoFitness;
     double  tSoFitnessCall;
     double  tSoGenCall;
+
 };
 
 #endif

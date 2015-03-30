@@ -31,6 +31,8 @@ public:
             int sTourMut = C_S_TOURNEY_MUT,
             double cMutProb = -1.0 );
 
+    QString toString() const;
+
     int cNodes;
     int cTest;
     int cGen;
