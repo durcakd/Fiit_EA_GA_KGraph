@@ -34,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     runTestPB = new QPushButton(tr("Run test"));
     buttonLA->addLayout(paramLA);
-    buttonLA->addWidget(createFirstExclusiveGroup());
     buttonLA->addWidget(runTestPB);
     buttonLA->addWidget(&promtL1);
     buttonLA->addWidget(&promtL2);
@@ -111,22 +110,6 @@ void MainWindow::bUseAutoProbChanged(bool checked) {
         sMutProbLE->setEnabled(true);
     }
 }
-
-QGroupBox *MainWindow::createFirstExclusiveGroup() {
-    QGroupBox *groupBox = new QGroupBox();
-    ga1RB = new QRadioButton(tr("GA 1"));
-    ga2RB = new QRadioButton(tr("GA 2"));
-    ga3RB = new QRadioButton(tr("GA 3"));
-    ga1RB->setChecked(true);
-    QVBoxLayout *vbox = new QVBoxLayout;
-    vbox->addWidget(ga1RB);
-    vbox->addWidget(ga2RB);
-    vbox->addWidget(ga3RB);
-    groupBox->setLayout(vbox);
-    return groupBox;
-}
-
-
 
 QGridLayout *MainWindow::createParamLayout() {
     QLabel *cNodesL = new QLabel(tr("Nodes"));

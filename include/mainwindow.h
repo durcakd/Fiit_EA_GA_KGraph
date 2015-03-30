@@ -31,7 +31,6 @@ public slots:
 
 private:
     QGridLayout *createParamLayout();
-    QGroupBox *createFirstExclusiveGroup();
     GAInput getParams();
 
 
@@ -61,9 +60,6 @@ private:
     QCheckBox *bUseProbMutCB;
     QCheckBox *bUseAutoProbCB;
 
-    QRadioButton *ga1RB;
-    QRadioButton *ga2RB;
-    QRadioButton *ga3RB;
 /*
 cNodes
 cTest
