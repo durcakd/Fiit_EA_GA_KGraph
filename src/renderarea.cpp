@@ -54,6 +54,9 @@ void RenderArea::paintEvent(QPaintEvent * /* event */) {
     if (antialiased)
         painter.setRenderHint(QPainter::Antialiasing, true);
 
+    QPen         pointPen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
+    QPen          edgePen(Qt::blue,  1, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
+    QPen interceptEdgePen(Qt::red,   1, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
 
 
     int minwind = width() < height() ? width():height();
@@ -72,9 +75,11 @@ void RenderArea::paintEvent(QPaintEvent * /* event */) {
             int y1 = (((e.y1)-miny) * coef);
             int x2 = (((e.x2)-minx) * coef);
             int y2 = (((e.y2)-miny) * coef);
+            painter.setPen( e.isIntercepted ? interceptEdgePen : edgePen );
             painter.drawLine(x1,y1,x2,y2);
 
             // Points:
+            painter.setPen(pointPen );
             painter.drawPoint(x1,y1);
             painter.drawPoint(x2,y2);
         }

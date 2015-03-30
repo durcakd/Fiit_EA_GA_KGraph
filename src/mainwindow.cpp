@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     buttonLA->addWidget(&promtL1);
     buttonLA->addWidget(&promtL2);
     buttonLA->addWidget(&promtL3);
+    buttonLA->addWidget(&promtL4);
 
     mainLA->addLayout(buttonLA);
     mainLA->addWidget(&rendera);
@@ -73,8 +74,10 @@ void MainWindow::runTest() {
 
 
     promtL1.setText("Success rate: "+QString::number(((double)output.tSolutions*100)/input.cTest)+"%");
-    promtL2.setText("Mean fitness: "+QString::number(output.tMeanFitness, 'f', 10));
+    promtL2.setText("Mean fitness: "+QString::number(output.tMeanFitness, 'f', 2));
     promtL3.setText("Mean fitness call: "+QString::number(output.tMeanFitnessCall, 'f', 0));
+    if (NULL != output.resGraph){
+    promtL4.setText("Best fitness: "+QString::number(output.resGraph->getFitness())); }
     tested = true;
 }
 

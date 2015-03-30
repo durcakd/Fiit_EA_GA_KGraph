@@ -41,6 +41,7 @@ private:
     QLabel promtL1;
     QLabel promtL2;
     QLabel promtL3;
+    QLabel promtL4;
 
     GAInput input;
     GAOutput output;
