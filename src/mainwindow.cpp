@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     buttonLA->addWidget(&promtL4);
 
     mainLA->addLayout(buttonLA);
-    mainLA->addWidget(&rendera);
+    mainLA->addWidget(&graphArea);
 
     QWidget *widget = new QWidget;
     widget->setLayout(mainLA);
@@ -68,7 +68,7 @@ void MainWindow::runTest() {
     input = getParams();
     output = statisticTest.simpleTest(input);
 
-    rendera.setGraphEdges( output.resGraph);
+    graphArea.setGraphEdges( output.resGraph);
 //    GA ga;
 //    ga.optimize(input);
 

@@ -1,8 +1,8 @@
-#include "renderarea.h"
+#include "grapharea.h"
 
 #include <QPainter>
 
-RenderArea::RenderArea(QWidget *parent)
+GraphArea::GraphArea(QWidget *parent)
     : QWidget(parent)
 {
     antialiased = true;
@@ -11,25 +11,15 @@ RenderArea::RenderArea(QWidget *parent)
     edgeList = NULL;
 }
 
-QSize RenderArea::minimumSizeHint() const {
+QSize GraphArea::minimumSizeHint() const {
     return QSize(200, 200);
 }
 
-QSize RenderArea::sizeHint() const {
-    return QSize(1000, 600);
+QSize GraphArea::sizeHint() const {
+    return QSize(800, 600);
 }
 
-void RenderArea::setPen(const QPen &pen) {
-    this->pen = pen;
-    update();
-}
-
-void RenderArea::setBrush(const QBrush &brush) {
-    this->brush = brush;
-    update();
-}
-
-void RenderArea::setGraphEdges(Graph *g) {
+void GraphArea::setGraphEdges(Graph *g) {
     if (NULL != g) {
         qDebug() << "RENDER AREA: nmew graph: " << g->toString();
         double maxx, maxy;
@@ -44,29 +34,22 @@ void RenderArea::setGraphEdges(Graph *g) {
     update();
 }
 
-
-
-void RenderArea::paintEvent(QPaintEvent * /* event */) {
+void GraphArea::paintEvent(QPaintEvent * /* event */) {
 
     QPainter painter(this);
-    painter.setPen(pen);
-    painter.setBrush(brush);
     if (antialiased)
         painter.setRenderHint(QPainter::Antialiasing, true);
 
-    QPen         pointPen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
-    QPen          edgePen(Qt::blue,  1, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
-    QPen interceptEdgePen(Qt::red,   1, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
-
-
-    int minwind = width() < height() ? width():height();
-    double coef = ((double)minwind-20)/maxd;
-
-    painter.save();
-    painter.translate((width()-minwind)/2+10, (height()-minwind)/2+10);
-
     if (NULL != edgeList) {
+        painter.save();
+        int minwind = width() < height() ? width():height();
+        double coef = ((double)minwind-20)/maxd;
+        painter.translate((width()-minwind)/2+10, (height()-minwind)/2+10);
 
+
+        QPen         pointPen(Qt::black, 4, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
+        QPen          edgePen(Qt::blue,  1, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
+        QPen interceptEdgePen(Qt::red,   1, Qt::SolidLine, Qt::RoundCap, Qt::MiterJoin);
 
         std::vector<Edge*>::const_iterator it=edgeList->cbegin();
         for ( ; it!= edgeList->cend(); it++) {
@@ -83,10 +66,8 @@ void RenderArea::paintEvent(QPaintEvent * /* event */) {
             painter.drawPoint(x1,y1);
             painter.drawPoint(x2,y2);
         }
+        painter.restore();
     }
-
-    painter.restore();
-
 
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setPen(palette().dark().color());
