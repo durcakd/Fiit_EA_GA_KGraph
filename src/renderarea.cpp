@@ -5,10 +5,10 @@
 RenderArea::RenderArea(QWidget *parent)
     : QWidget(parent)
 {
-    antialiased = false;
+    antialiased = true;
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
-    graph = NULL;
+    edgeList = NULL;
 }
 
 QSize RenderArea::minimumSizeHint() const {
@@ -29,14 +29,18 @@ void RenderArea::setBrush(const QBrush &brush) {
     update();
 }
 
-void RenderArea::setGraph(Graph *g) {
-    //delete graph;
-    graph = g;
+void RenderArea::setGraphEdges(Graph *g) {
     double maxx, maxy;
     g->getExtremNodesCords(minx, miny, maxx, maxy);
     maxd = maxx-minx > maxy-miny ? maxx-minx : maxy-miny;
 
+    delete edgeList;
+    edgeList = new std::vector<Edge*>();
+
+    g->calculateEdges( *edgeList);
 }
+
+
 
 void RenderArea::paintEvent(QPaintEvent * /* event */) {
     static const QPoint points[4] = {
@@ -60,13 +64,24 @@ void RenderArea::paintEvent(QPaintEvent * /* event */) {
             painter.save();
             painter.translate(x, y);
 
-            // Line:
-            painter.drawLine(rect.bottomLeft(), rect.topRight());
+            if (NULL != edgeList) {
+                int minwind = width() < height() ? width():height();
+                double coef = ((double)minwind)/maxd;
 
-            // Points:
-            painter.drawPoints(points, 4);
-            // Polygon:
-            painter.drawPolygon(points, 4);
+                std::vector<Edge*>::const_iterator it=edgeList->cbegin();
+                for ( ; it!= edgeList->cend(); it++) {
+                    const Edge &e = **it;
+                    int x1 = ((e.x1)-minx) * coef;
+                    int y1 = ((e.y1)-miny) * coef;
+                    int x2 = ((e.x2)-minx) * coef;
+                    int y2 = ((e.y2)-miny) * coef;
+                    painter.drawLine(x1,y1,x2,y2);
+
+                    // Points:
+                    painter.drawPoint(x1,y1);
+                    painter.drawPoint(x2,y2);
+                }
+            }
 
             painter.restore();
         }

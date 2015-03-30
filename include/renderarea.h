@@ -6,6 +6,8 @@
 #include <QPixmap>
 #include <QWidget>
 #include "graph.h"
+#include "edge.h"
+#include <vector>
 
 class RenderArea : public QWidget
 {
@@ -17,7 +19,7 @@ public:
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
 
-    void setGraph(Graph *g);
+    void setGraphEdges(Graph *g);
 
 public slots:
     void setPen(const QPen &pen);
@@ -31,12 +33,11 @@ private:
     QBrush brush;
     bool antialiased;
 
-
-
-    Graph *graph;
     double minx;
     double miny;
     double maxd;
+
+    std::vector<Edge*> *edgeList;
 };
 
 #endif // RENDERAREA_H

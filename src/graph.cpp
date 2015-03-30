@@ -92,10 +92,17 @@ int Graph::calcFitness() {
     return 0;
 }
 
-void Graph::calculateEdges() {
+void Graph::calculateEdges(std::vector<Edge *> &edgeList) {
     createEdges = true;
     edgeBacktrack(0);
     createEdges = false;
+
+    std::map<std::string, Edge*>::const_iterator it = edges->cbegin();
+    for( ; it!= edges->cend(); it++) {
+        Edge *e = it->second;
+        edgeList.push_back(e);
+    }
+    edges->clear();
 }
 
 

@@ -38,7 +38,8 @@ public:
     QString toString() const;
     void getExtremNodesCords(double &minx, double &miny, double &maxx, double &maxy) const;
 
-    std::map<std::string, Edge*> *getEdges();
+
+    void calculateEdges(std::vector<Edge*> &edgeList);
 
 
 private:
@@ -53,15 +54,15 @@ private:
     bool interceptOrderedEdges(double x1, double y1, double x2, double y2,
                                double x3, double y3, double x4, double y4, bool hasSameNodes) const;
     bool interceptOrderedEdges1(double x1, double y1, double x2, double y2,
-                               double x3, double y3, double x4, double y4, bool hasSameNodes) const;
+                                double x3, double y3, double x4, double y4, bool hasSameNodes) const;
     bool interceptOrderedEdges2(double x1, double y1, double x2, double y2,
-                               double x3, double y3, double x4, double y4, bool hasSameNodes) const;
+                                double x3, double y3, double x4, double y4, bool hasSameNodes) const;
     bool checkSameNodes(int i1, int i2, int i3, int i4) const;
 
     bool checkSameNodesValues(double x, double y, int index) const;
 
     void addEdgeToMap(int n1, int n2, bool isIntercept);
-    void calculateEdges();
+    std::map<std::string, Edge*> *getEdges();
 
     static int _sNodes;
 
