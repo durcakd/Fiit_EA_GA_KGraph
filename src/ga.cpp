@@ -3,6 +3,7 @@
 //#include <math.h>
 #include <vector>
 #include <algorithm>
+#include <QStringBuilder>
 
 #include <QDebug>
 #include "util.h"
@@ -36,7 +37,6 @@ GAOutput GA::optimize(const GAInput &in)
         qDebug() << "WARNING wrong population sizes"; return out; }
     if (in.sCross%2 != 0 ) {
         qDebug() << "WARNING wrong crossover size"; return out; }
-
 
     int     fitnessCounter = 0;
     int     bestFitness = out.oResultFitness;
@@ -78,8 +78,6 @@ GAOutput GA::optimize(const GAInput &in)
 
         // calculate fitness off all population and update best
         recalcFitness( popList, fitnessCounter, bestFitness, &bestGraph);
-
-        qDebug() <<"---------"<< genit <<"  BF="<<bestFitness << "   FC="<< fitnessCounter;
 
         genit++;
     }
@@ -187,4 +185,32 @@ void GA::printPop(std::vector<Graph*> &popList) const {
         const Graph *g = popList.at(i);
         qDebug() << g->toString();
     }
+}
+
+QString GA::getStatistic(int genit, int fitnessCalls, Graph *bestGrap, std::vector<Graph*> &popList) {
+    unsigned int popSize = popList.size();
+    // mean fitness
+    double meanFitness = 0.0;
+    for (unsigned int i=0; i<popSize; i++) {
+        const Graph *g = popList.at(i);
+        meanFitness += g->getFitness();
+    }
+    meanFitness /= popSize;
+
+    // SO
+    double soFitness = 0.0;
+    for (unsigned int i=0; i<popSize; i++) {
+        const Graph *g = popList.at(i);
+        double diff = meanFitness - g->getFitness();
+        soFitness += (diff*diff);
+    }
+    soFitness /= popSize;
+    soFitness = sqrt(soFitness);
+
+    QString s = "  "% QString::number(genit+2)\
+            %" ;BF=;"% QString::number( bestGrap->getFitness())\
+            %" ;MF=;"% QString::number( meanFitness )\
+            %" ;SO=;"% QString::number( soFitness )\
+            %" ;FC=;"% QString::number( fitnessCalls );
+    return s;
 }

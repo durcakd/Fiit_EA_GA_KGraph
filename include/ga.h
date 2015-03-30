@@ -25,6 +25,8 @@ private:
     const Graph *getTournamentGraph(int tournamentSize, std::vector<Graph*> &popList) const;
     void completeClearPop(std::vector<Graph*> &popList);
     void printPop(std::vector<Graph*> &popList) const;
+
+    QString getStatistic(int genit, int fitnessCalls, Graph *bestGrap, std::vector<Graph*> &popList);
 };
 
 #endif
