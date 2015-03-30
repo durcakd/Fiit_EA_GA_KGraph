@@ -52,6 +52,7 @@ GAOutput GA::optimize(const GAInput &in)
 
     recalcFitness( popList, fitnessCounter, bestFitness, &bestGraph);
     if (printStatistic) {
+        qDebug() << " ;Generacia;Najlepsia fitness;Premerna fitness; Smerodajna odchylka; ";
         qDebug() << getStatistic( 0, fitnessCounter, bestGraph, popList);
     }
 
@@ -202,13 +203,20 @@ QString GA::getStatistic(int genit, int fitnessCalls, Graph *bestGrap, std::vect
     }
     soFitness /= popSize;
     soFitness = sqrt(soFitness);
-
+/*
     QString s = ";  "% QString::number(genit+1)\
             %" ;BF=;"% QString::number( bestGrap->getFitness())\
             %" ;MF=;"% QString::number( meanFitness,'f',2 )\
             %" ;SOF=;"% QString::number( soFitness,'f',2 )\
+            %";";
+*/
+    QString s = ";  "% QString::number(genit+1)\
+            %" ;"% QString::number( bestGrap->getFitness())\
+            %" ;"% QString::number( meanFitness,'f',2 )\
+            %" ;"% QString::number( soFitness,'f',2 )\
             /*%" ;FC=;"% QString::number( fitnessCalls )*/\
             %";";
+
 
     return s;
 }

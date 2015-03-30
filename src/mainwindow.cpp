@@ -58,8 +58,6 @@ MainWindow::MainWindow(QWidget *parent)
                       this, SLOT(bUseProbMutChanged(bool)));
     QObject::connect( bUseAutoProbCB, SIGNAL(clicked(bool)),
                       this, SLOT(bUseAutoProbChanged(bool)));
-    runTest();
-
     graphArea.hide();
 }
 

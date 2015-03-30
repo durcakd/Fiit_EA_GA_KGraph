@@ -18,6 +18,8 @@ public:
     // all tests
     Graph   *resGraph;
     int     tSolutions;
+    double  tSuccess;
+
     double  tMeanFitness;
     double  tMeanFitnessCall;
     double  tMeanGenCall;

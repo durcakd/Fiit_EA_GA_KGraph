@@ -69,26 +69,26 @@ void StatisticTest::calcStatistic(std::vector<GAOutput> &results, GAOutput &outT
         double dFitness      = meanFitness - it->oResultFitness;
         double dGenCalls     = meanGenCalls - it->oGenCall;
         double dFitnessCalls = meanFitnessCalls - it->oFitnessCall;
-        soFitness      = dFitness*dFitness;
-        soGenCalls     = dGenCalls*dGenCalls;
-        soFitnessCalls = dFitnessCalls*dFitnessCalls;
+        soFitness      += dFitness*dFitness;
+        soGenCalls     += dGenCalls*dGenCalls;
+        soFitnessCalls += dFitnessCalls*dFitnessCalls;
     }
     soFitness = sqrt(soFitness/resSize);
     soGenCalls = sqrt(soGenCalls/resSize);
     soFitnessCalls = sqrt(soFitnessCalls/resSize);
 
     outTest.tSolutions       = solutionCount;
+    outTest.tSuccess         = ((double)solutionCount)*100.0/resSize;
     outTest.tMeanFitness     = meanFitness;
     outTest.tMeanGenCall     = meanGenCalls;
     outTest.tMeanFitnessCall = meanFitnessCalls;
     outTest.tSoFitness       = soFitness;
     outTest.tSoGenCall       = soGenCalls;
     outTest.tSoFitnessCall   = soFitnessCalls;
-
 }
 
 QString StatisticTest::StatisticToString( GAOutput &outTest) const {
-    QString s = ";sols=;"% QString::number( outTest.tSolutions )\
+    QString s = ";success=;"% QString::number( outTest.tSuccess,'f',2 )\
             %" ;MF=;"% QString::number( outTest.tMeanFitness,'f',2 )\
             %" ;SOF=;"% QString::number( outTest.tSoFitness,'f',2 )\
             %" ;MG=;"% QString::number( outTest.tMeanGenCall,'f',2 )\
