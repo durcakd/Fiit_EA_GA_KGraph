@@ -10,6 +10,7 @@
 
 GA::GA()
 {
+    printStatistic = false;
 }
 
 
@@ -51,8 +52,9 @@ GAOutput GA::optimize(const GAInput &in)
     }
 
     recalcFitness( popList, fitnessCounter, bestFitness, &bestGraph);
-
-    qDebug() << "best "<<bestGraph->toString();
+    if (printStatistic) {
+        qDebug() << getStatistic( 0, fitnessCounter, bestGraph, popList);
+    }
 
     int genit=1;
     while ( genit<in.cGen && !bestGraph->isSolution()) {
@@ -78,6 +80,10 @@ GAOutput GA::optimize(const GAInput &in)
 
         // calculate fitness off all population and update best
         recalcFitness( popList, fitnessCounter, bestFitness, &bestGraph);
+
+        if (printStatistic) {
+            qDebug() << getStatistic( genit, fitnessCounter, bestGraph, popList);
+        }
 
         genit++;
     }
@@ -188,10 +194,10 @@ void GA::printPop(std::vector<Graph*> &popList) const {
 }
 
 QString GA::getStatistic(int genit, int fitnessCalls, Graph *bestGrap, std::vector<Graph*> &popList) {
-    unsigned int popSize = popList.size();
+    int popSize = popList.size();
     // mean fitness
     double meanFitness = 0.0;
-    for (unsigned int i=0; i<popSize; i++) {
+    for (int i=0; i<popSize; i++) {
         const Graph *g = popList.at(i);
         meanFitness += g->getFitness();
     }
@@ -199,7 +205,7 @@ QString GA::getStatistic(int genit, int fitnessCalls, Graph *bestGrap, std::vect
 
     // SO
     double soFitness = 0.0;
-    for (unsigned int i=0; i<popSize; i++) {
+    for (int i=0; i<popSize; i++) {
         const Graph *g = popList.at(i);
         double diff = meanFitness - g->getFitness();
         soFitness += (diff*diff);
@@ -207,10 +213,10 @@ QString GA::getStatistic(int genit, int fitnessCalls, Graph *bestGrap, std::vect
     soFitness /= popSize;
     soFitness = sqrt(soFitness);
 
-    QString s = "  "% QString::number(genit+2)\
+    QString s = "  "% QString::number(genit+1)\
             %" ;BF=;"% QString::number( bestGrap->getFitness())\
-            %" ;MF=;"% QString::number( meanFitness )\
-            %" ;SO=;"% QString::number( soFitness )\
+            %" ;MF=;"% QString::number( meanFitness,'f',2 )\
+            %" ;SO=;"% QString::number( soFitness,'f',2 )\
             %" ;FC=;"% QString::number( fitnessCalls );
     return s;
 }

@@ -25,6 +25,7 @@ GAOutput StatisticTest::simpleTest(GAInput in)
     for (int i=0; i<in.cTest; i++) {
 
         GA ga;
+        ga.enableStatistics( 1==in.cTest);
         GAOutput out = ga.optimize(in);
 
 //        if (0 == i) {

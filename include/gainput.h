@@ -4,7 +4,7 @@
 #include <QDebug>
 
 const int C_NODES = 9;
-const int C_MAX_TEST = 5;
+const int C_MAX_TEST = 1;
 const int C_MAX_GEN = 50;
 const int C_MAX_POP = 30;
 const int C_S_ELIT = 3;

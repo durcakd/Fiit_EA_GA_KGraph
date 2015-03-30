@@ -13,6 +13,7 @@ public:
     GA();
 
     GAOutput optimize(const GAInput &in);
+    inline void enableStatistics(bool enable) { printStatistic = enable;}
 
 private:
     void elite(int count, std::vector<Graph*> &sortedPopList, std::vector<Graph*> &newPopList);
@@ -27,6 +28,8 @@ private:
     void printPop(std::vector<Graph*> &popList) const;
 
     QString getStatistic(int genit, int fitnessCalls, Graph *bestGrap, std::vector<Graph*> &popList);
+
+    bool printStatistic;
 };
 
 #endif
