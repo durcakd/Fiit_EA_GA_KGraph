@@ -13,12 +13,13 @@ void Graph::init(int sNodes) {
     Util::get()->setIntDistUpBound(sNodes);
 }
 
-
 //-- constructor --
 Graph::Graph() {
     _fitnes = -1;
     _x = new double[_sNodes];
     _y = new double[_sNodes];
+    edges = NULL;
+    createEdges = false;
 }
 
 //-- destructor --
@@ -337,3 +338,33 @@ void Graph::crossover(const Graph &in2, Graph &out1, Graph &out2) const {
     out2.setNodes(_x, _y,           rindex, _sNodes);
 }
 
+//------------------------------------------
+
+void Graph::getExtremNodesCords(double &minx, double &miny, double &maxx, double &maxy) const {
+    minx = maxx = _x[0];
+    miny = maxy = _y[0];
+    for (int i=0; i<_sNodes; i++) {
+        if (_x[i] < minx)    minx = _x[i];
+        if (_x[i] > maxx)    maxx = _x[i];
+        if (_y[i] < miny)    miny = _y[i];
+        if (_y[i] > maxy)    maxy = _y[i];
+    }
+}
+
+std::map<std::string, bool> *Graph::getEdges() {
+    if (NULL == edges) {
+        edges = new std::map<std::string, bool>();
+    }
+
+    return edges;
+}
+
+void Graph::setEdge(int n1, int n2, bool isIntercept) {
+    std::map<std::string, bool> *edgeMap = getEdges();
+    std::string key = std::to_string(n1)+";"+std::to_string(n2);
+
+    if (edgeMap->find(key) == edgeMap->end()
+            || isIntercept) {
+        (*edgeMap)[key] = isIntercept;
+    }
+}

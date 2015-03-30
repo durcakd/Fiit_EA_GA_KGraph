@@ -8,6 +8,7 @@ RenderArea::RenderArea(QWidget *parent)
     antialiased = false;
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
+    graph = NULL;
 }
 
 QSize RenderArea::minimumSizeHint() const {
@@ -28,11 +29,14 @@ void RenderArea::setBrush(const QBrush &brush) {
     update();
 }
 
-void RenderArea::setAntialiased(bool antialiased) {
-    this->antialiased = antialiased;
-    update();
-}
+void RenderArea::setGraph(Graph *g) {
+    //delete graph;
+    graph = g;
+    double maxx, maxy;
+    g->getExtremNodesCords(minx, miny, maxx, maxy);
+    maxd = maxx-minx > maxy-miny ? maxx-minx : maxy-miny;
 
+}
 
 void RenderArea::paintEvent(QPaintEvent * /* event */) {
     static const QPoint points[4] = {

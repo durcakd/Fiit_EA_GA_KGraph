@@ -7,7 +7,8 @@
 
 #include <vector>
 #include <QDebug>
-#include <bitset>
+#include <map>
+#include <string>
 
 
 class Graph {
@@ -34,8 +35,9 @@ public:
     void crossover(const Graph &in2, Graph &out1, Graph &out2) const;
 
     QString toString() const;
+    void getExtremNodesCords(double &minx, double &miny, double &maxx, double &maxy) const;
 
-
+    std::map<std::string, bool> *getEdges();
 
 
 private:
@@ -57,18 +59,19 @@ private:
 
     bool checkSameNodesValues(double x, double y, int index) const;
 
+    void setEdge(int n1, int n2, bool isIntercept);
+
     static int _sNodes;
 
     double *_x;
     double *_y;
     int _fitnes;
+
+    bool createEdges;
+    std::map<std::string, bool> *edges;
+
+
 };
-
-
-//bool compare (const Graph *g1, const Graph *g2) {
-//    return (g1->getFitness() > g2->getFitness());
-//}
-
 
 
 #endif
