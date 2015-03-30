@@ -185,12 +185,12 @@ bool Graph::interceptEdges(double x1, double y1, double x2, double y2,
 
 bool Graph::interceptOrderedEdges(double x1, double y1, double x2, double y2,
                                   double x3, double y3, double x4, double y4, bool hasSameNodes) const {
-    bool res1 = interceptOrderedEdges1(x1,y1,x2,y2, x3,y3,x4,y4, hasSameNodes);
+//    bool res1 = interceptOrderedEdges1(x1,y1,x2,y2, x3,y3,x4,y4, hasSameNodes);
     bool res2 = interceptOrderedEdges2(x1,y1,x2,y2, x3,y3,x4,y4, hasSameNodes);
-    if (res1 != res2) {
+/*    if (res1 != res2) {
         qDebug() << "Huston we have problem! differen results: "<< res1 <<" "<<res2;
         qDebug() << x1<<" "<<y1<<" "<<x2<<" "<<y2<<"     "<<x3<<" "<<y3<<" "<<x4<<" "<<y4;
-    }
+    } */
     return res2;
 }
 
