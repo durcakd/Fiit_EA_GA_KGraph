@@ -23,7 +23,12 @@ GAOutput GA::optimize(const GAInput &in)
 {
     qDebug() <<"====================================";
     GAOutput out;
-    out.isSolution = false;
+    out.oIsSolution = false;
+    out.oResultFitness = 100000000;
+    out.oGenCall = 0;
+    out.oFitnessCall = 0;
+    out.resGraph = NULL;
+
     Graph::init(in.cNodes);
     Util::get()->setPopSize(in.cPop);
 
@@ -34,14 +39,10 @@ GAOutput GA::optimize(const GAInput &in)
 
 
     int     fitnessCounter = 0;
-    int     bestFitness = 10000000;
+    int     bestFitness = out.oResultFitness;
     Graph  *bestGraph = NULL;
     std::vector<Graph*>  popList;
     std::vector<Graph*> newPopList;
-
-
-    //out.resultFitness = 100000000;
-    //out.fitnessCount = 0;
 
     for (int i=0; i< in.cPop; i++) {
         Graph *g = new Graph();
@@ -53,7 +54,8 @@ GAOutput GA::optimize(const GAInput &in)
 
     qDebug() << "best "<<bestGraph->toString();
 
-    for (int genit=1; genit<in.cGen; genit++) {
+    int genit=1;
+    for ( ; genit<in.cGen; genit++) {
         qDebug() << genit << ". ==================================";
         std::sort (popList.begin(), popList.end(), GraphComparator);
         //printPop(popList);
@@ -81,6 +83,11 @@ GAOutput GA::optimize(const GAInput &in)
         qDebug() <<"---------"<< genit <<"  BF="<<bestFitness << "   FC="<< fitnessCounter;
     }
     qDebug() << "best "<<bestGraph->toString();
+    out.oIsSolution = false;  // TODO
+    out.oResultFitness = bestGraph->getFitness();
+    out.oGenCall = genit;
+    out.oFitnessCall = fitnessCounter;
+    out.resGraph = bestGraph->clone();
     return out;
 }
 

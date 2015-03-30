@@ -11,7 +11,7 @@ class StatisticTest
 public:
     StatisticTest();
 
-    //HCOutput simpleTest(HCInput in);
+    GAOutput simpleTest(GAInput in);
 
 };
 

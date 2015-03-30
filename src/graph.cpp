@@ -13,12 +13,13 @@ void Graph::init(int sNodes) {
     Util::get()->setIntDistUpBound(sNodes);
 }
 
-
 //-- constructor --
 Graph::Graph() {
     _fitnes = -1;
     _x = new double[_sNodes];
     _y = new double[_sNodes];
+    edges = NULL;
+    createEdges = false;
 }
 
 //-- destructor --
@@ -91,6 +92,21 @@ int Graph::calcFitness() {
     return 0;
 }
 
+void Graph::calculateEdges(std::vector<Edge *> &edgeList) {
+    createEdges = true;
+    _fitnes = 0;
+    edgeBacktrack(0);
+    createEdges = false;
+
+    std::map<std::string, Edge*>::const_iterator it = edges->cbegin();
+    for( ; it!= edges->cend(); it++) {
+        Edge *e = it->second;
+        edgeList.push_back(e);
+    }
+    edges->clear();
+}
+
+
 void Graph::edgeBacktrack(int start) {
     if (start+1 < _sNodes) {
         for (int i=start+1 ; i<_sNodes; i++) {
@@ -135,6 +151,11 @@ void Graph::edgeBacktrack(int start, int its,
                              <<"     "<<int(100*_x[start])<<" "<<int(100*_y[start])<<" "<<int(100*_x[i])<<" "<<int(100*_y[i]);
                 }
             }
+            if (createEdges) {
+                addEdgeToMap(node1, node2, interfer);
+                addEdgeToMap(start, i, interfer);
+            }
+
         }
         edgeBacktrack(start+1, start+2, x1, y1, x2, y2,
                       node1, node2);
@@ -337,3 +358,40 @@ void Graph::crossover(const Graph &in2, Graph &out1, Graph &out2) const {
     out2.setNodes(_x, _y,           rindex, _sNodes);
 }
 
+//------------------------------------------
+
+void Graph::getExtremNodesCords(double &minx, double &miny, double &maxx, double &maxy) const {
+    minx = maxx = _x[0];
+    miny = maxy = _y[0];
+    for (int i=0; i<_sNodes; i++) {
+        if (_x[i] < minx)    minx = _x[i];
+        if (_x[i] > maxx)    maxx = _x[i];
+        if (_y[i] < miny)    miny = _y[i];
+        if (_y[i] > maxy)    maxy = _y[i];
+    }
+}
+
+std::map<std::string, Edge*> *Graph::getEdges() {
+    if (NULL == edges) {
+        edges = new std::map<std::string, Edge*>();
+    }
+    return edges;
+}
+
+void Graph::addEdgeToMap(int n1, int n2, bool isIntercept) {
+    std::string key = std::to_string(n1)+";"+std::to_string(n2);
+
+    std::map<std::string, Edge*> *edgeMap = getEdges();
+    std::map<std::string, Edge*>::iterator it = edgeMap->find(key);
+
+    if (it == edgeMap->end()) {
+        // new one created
+        qDebug() <<"  "<<QString::fromStdString(key)<<" add";
+        Edge *e = new Edge(_x[n1],_y[n1],_x[n2],_y[n2], isIntercept);
+        (*edgeMap)[key] = e;
+    } else if (isIntercept) {
+        qDebug() <<"  "<<QString::fromStdString(key)<<" update";
+
+        it->second->isIntercepted = isIntercept;
+    }
+}

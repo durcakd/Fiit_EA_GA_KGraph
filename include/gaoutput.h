@@ -10,19 +10,22 @@ class GAOutput
 public:
     GAOutput();
 
-    bool isSolution;
-    double resultFitness;
-    int tCount;
-    int fitnessCount;
+    bool    oIsSolution;
+    int     oResultFitness;
+    int     oGenCall;
+    int     oFitnessCall;
 
-    double meanFitness;
-    double meanFitnessCall;
-    int solutions;
 
-    QVector<double> vfinalAlphaF;
-    QVector<double> vAlphaF;
-    QVector<double> testFitness;
-    QVector<double> testFitnessCalls;
+    // all tests
+    double  tMeanFitness;
+    double  tMeanFitnessCall;
+    int     tSolutions;
+    Graph   *resGraph;
+
+//    QVector<double> vfinalAlphaF;
+//    QVector<double> vAlphaF;
+//    QVector<double> testFitness;
+//    QVector<double> testFitnessCalls;
 
 };
 

@@ -39,9 +39,10 @@ MainWindow::MainWindow(QWidget *parent)
     buttonLA->addWidget(&promtL1);
     buttonLA->addWidget(&promtL2);
     buttonLA->addWidget(&promtL3);
+    buttonLA->addWidget(&promtL4);
 
     mainLA->addLayout(buttonLA);
-    mainLA->addWidget(&rendera);
+    mainLA->addWidget(&graphArea);
 
     QWidget *widget = new QWidget;
     widget->setLayout(mainLA);
@@ -63,17 +64,21 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::runTest() {
     qDebug() << "Run test...";
-    //StatisticTest statisticTest;
+    StatisticTest statisticTest;
     input = getParams();
-    //output = statisticTest.simpleTest(input);
+    output = statisticTest.simpleTest(input);
+
+    graphArea.setGraphEdges( output.resGraph);
+//    GA ga;
+//    ga.optimize(input);
+
+
+    promtL1.setText("Success rate: "+QString::number(((double)output.tSolutions*100)/input.cTest)+"%");
+    promtL2.setText("Mean fitness: "+QString::number(output.tMeanFitness, 'f', 2));
+    promtL3.setText("Mean fitness call: "+QString::number(output.tMeanFitnessCall, 'f', 0));
+    if (NULL != output.resGraph){
+    promtL4.setText("Best fitness: "+QString::number(output.resGraph->getFitness())); }
     tested = true;
-
-    GA ga;
-    ga.optimize(input);
-
-    //    promtL1.setText("Success rate: "+QString::number(((double)output.solutions*100)/input.testmax)+"%");
-    //    promtL2.setText("Mean fitness: "+QString::number(output.meanFitness, 'f', 10));
-    //    promtL3.setText("Mean fitness call: "+QString::number(output.meanFitnessCall, 'f', 0));
 }
 
 
