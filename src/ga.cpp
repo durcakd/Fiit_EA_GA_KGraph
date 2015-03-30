@@ -56,7 +56,6 @@ GAOutput GA::optimize(const GAInput &in)
 
     int genit=1;
     for ( ; genit<in.cGen; genit++) {
-        qDebug() << genit << ". ==================================";
         std::sort (popList.begin(), popList.end(), GraphComparator);
         //printPop(popList);
 

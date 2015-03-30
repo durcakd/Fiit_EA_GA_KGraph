@@ -3,18 +3,22 @@
 
 //// define static fields and methods
 int Graph::_sNodes;
+int Graph::_solutionCount;
 
 void Graph::init(int sNodes) {
     if (sNodes<3) {
         sNodes = 3;
     }
     _sNodes = sNodes;
+    _solutionCount = 18;
 
     Util::get()->setIntDistUpBound(sNodes);
 }
 
 //-- constructor --
-Graph::Graph() {
+Graph::Graph()
+    : solutions({0,0,0,0,0,1,3,9,19,36,62,102,153,229,324,447,603,798})
+{
     _fitnes = -1;
     _x = new double[_sNodes];
     _y = new double[_sNodes];
@@ -386,12 +390,21 @@ void Graph::addEdgeToMap(int n1, int n2, bool isIntercept) {
 
     if (it == edgeMap->end()) {
         // new one created
-        qDebug() <<"  "<<QString::fromStdString(key)<<" add";
         Edge *e = new Edge(_x[n1],_y[n1],_x[n2],_y[n2], isIntercept);
         (*edgeMap)[key] = e;
     } else if (isIntercept) {
-        qDebug() <<"  "<<QString::fromStdString(key)<<" update";
-
         it->second->isIntercepted = isIntercept;
     }
 }
+
+bool Graph::hasSolution(int nodesCount) {
+    return nodesCount < _solutionCount;
+}
+
+bool Graph::isSolution() const {
+    if (hasSolution(_sNodes)) {
+        return getFitness() > solutions[_sNodes];
+    }
+    return false;
+}
+

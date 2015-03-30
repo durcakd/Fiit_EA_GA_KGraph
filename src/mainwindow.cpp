@@ -60,6 +60,8 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect( bUseAutoProbCB, SIGNAL(clicked(bool)),
                       this, SLOT(bUseAutoProbChanged(bool)));
     runTest();
+
+    graphArea.hide();
 }
 
 void MainWindow::runTest() {
