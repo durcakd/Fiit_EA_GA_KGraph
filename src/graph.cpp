@@ -94,6 +94,7 @@ int Graph::calcFitness() {
 
 void Graph::calculateEdges(std::vector<Edge *> &edgeList) {
     createEdges = true;
+    _fitnes = 0;
     edgeBacktrack(0);
     createEdges = false;
 
