@@ -52,7 +52,7 @@ GAOutput GA::optimize(const GAInput &in)
 
     recalcFitness( popList, fitnessCounter, bestFitness, &bestGraph);
     if (printStatistic) {
-        qDebug() << " ;Generacia;Najlepsia fitness;Premerna fitness; Smerodajna odchylka; ";
+        qDebug() << " ;Generácia;Najlepšia fitness;Priemerná fitness; Smerodajná odchylka; ";
         qDebug() << getStatistic( 0, fitnessCounter, bestGraph, popList);
     }
 

@@ -316,8 +316,17 @@ void Graph::probabilityMutate(double probability) {
         if ( Util::get()->udD() <= probability) {
             double x,y;
             do {
+//                if (Util::get()->udD() <= 0.5) {
+//                    x = _x[i] + Util::get()->nD();
+//                    y = _y[i];
+//                } else {
+//                    x = _x[i];
+//                    y = _y[i] + Util::get()->nD();
+//                }
+
                 x = _x[i] + Util::get()->nD();
                 y = _y[i] + Util::get()->nD();
+
             } while (checkSameNodesValues(x, y, i));
 
             _x[i] = x;
